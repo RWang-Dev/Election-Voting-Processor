@@ -31,7 +31,7 @@ public class CPLFileProcessor extends FileProcessor{
         for (int i = 0; i < numBallots; i++){
             String[] arr = s.nextLine().split(","); // a single ballot (ex: ["","","1",""])
             int k = -1;
-            for (int j = 0; j < arr.length(); j++){ // loop through ballot to find vote
+            for (int j = 0; j < arr.length; j++){ // loop through ballot to find vote
                 if (! (arr[j].equals(""))) { // find only slot where it is not ""
                     k = j;
                 }

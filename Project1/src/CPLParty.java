@@ -14,7 +14,7 @@ class CPLParty extends Voteable {
         this.ID = ID;
         this.rankedPartyCandidates = candidates;
         this.numVotes = 0;
-        this.numPartyCandidates = candidates.length();
+        this.numPartyCandidates = candidates.length;
         this.numSeatsAllotedFirst = 0;
         this.numSeatsAllotedSecond = 0;
         this.numVotesAfterFirstAllocation = 0;
