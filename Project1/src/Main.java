@@ -3,7 +3,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
-
+// USELESS COMMENT BLAH BLAH
 public class Main{
     public static void main(String[] args){
         FileHandler fh;
