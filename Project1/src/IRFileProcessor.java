@@ -10,5 +10,6 @@ public class IRFileProcessor extends FileProcessor{
     // reads through CSV file containing CPL election data and returns a corresponding CPLElection object
     public Election processFile(File inputFile){
         // TODO:: implement
+        return null;
     }
 }

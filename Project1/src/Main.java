@@ -9,20 +9,30 @@ public class Main{
         FileHandler fh;
 
         // create FileHandler object based on if filename is input to command line or not
-        if (args == null){
+        if (args == null || args.length == 0){
             fh = new FileHandler();
         }
         else {
             fh = new FileHandler(args[0]);
         }
 
-        // open file
+        // retrieve file object for the input file
         File fp = fh.openFile();
+
+        // create Scanner to read File
+        Scanner scnr;
+        try {
+            scnr = new Scanner(fp);
+        }
+        catch (FileNotFoundException ex) {
+            // TODO:: Modify behavior here?
+            System.out.println("ERROR: File not found");
+            return;
+        }
 
         // Note: This is a slight deviation from our SDD
         // create FileProcessor object, based on reading first line of input File
         FileProcessor fileP;
-        Scanner scnr = new Scanner(fp);
         String firstLine = scnr.nextLine();
         if (firstLine.equals("IR")){
             fileP = new IRFileProcessor();
@@ -31,12 +41,12 @@ public class Main{
             fileP = new CPLFileProcessor();
         }
         else { // TODO:: can change how we handle this error
-            System.out.println("File incorectly formatted");
+            System.out.println("ERROR: File incorectly formatted");
             return;
         }
-        scnr.close(); // close Scanner
+        scnr.close(); // close Scanner, rest of file will be read later
 
-        // process file and create corresponding Election object with all the data
+        // read and process file to create corresponding Election object with all the data
         Election currentElection = fileP.processFile(fp);
 
         // run election algorithms

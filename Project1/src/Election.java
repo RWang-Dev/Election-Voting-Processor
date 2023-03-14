@@ -1,7 +1,7 @@
 // Abstract Election class that IRElection and CPLElection inherit from
 
 import java.util.Random;
-import java.land.Math;
+import java.lang.Math;
 import java.util.Scanner;
 
 public abstract class Election{
@@ -30,19 +30,19 @@ public abstract class Election{
 
     // takes in an array of Voteables and randomly returns a winner/loser depending on scenario
     public Voteable breakTie(Voteable[] voteable){
-        float rand = 0.0;
+        double rand = 0.0;
         Random r = new Random();
 
-        // randomly generate 1000 floats between 0.0 and 1.0 to ensure randomness
+        // randomly generate 1000 doubles between 0.0 and 1.0 to ensure randomness
         for (int i = 0; i < 1000; i++){
-            r.nextFloat();
+            r.nextDouble();
         }
-        rand = r.nextFloat(); // assign target value
+        rand = r.nextDouble(); // assign target value
 
-        int[] rand_voteables = new int[voteable.length]; // store each Voteable's randomly generated float
-        for (int i = 0; i < voteable.length; i++){ // randomly generate float for all non-null voteables
+        double[] rand_voteables = new double[voteable.length]; // store each Voteable's randomly generated double
+        for (int i = 0; i < voteable.length; i++){ // randomly generate double for all non-null voteables
             if (voteable[i] != null){
-                rand_voteables[i] = r.nextFloat();
+                rand_voteables[i] = r.nextDouble();
             }
             else {
                 rand_voteables[i] = 5; // large enough number that it won't interfere with 0.0 to 1.0
@@ -50,10 +50,10 @@ public abstract class Election{
         }
 
         // find minimum distance to target rand
-        float minDist = 2.0;
+        double minDist = 2.0;
         int minIdx = -1;
         for (int i = 0; i < voteable.length; i++){
-            float dist = Math.abs(rand - rand_voteables[i]);
+            double dist = Math.abs(rand - rand_voteables[i]);
             if (dist < minDist){
                 minDist = dist;
                 minIdx = i;

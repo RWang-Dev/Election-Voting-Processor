@@ -2,6 +2,7 @@
 // Handles processing of a CSV file containing information about a CPL election
 
 import java.util.Scanner;
+import java.io.FileNotFoundException;
 import java.io.File;
 
 public class CPLFileProcessor extends FileProcessor{
@@ -9,11 +10,20 @@ public class CPLFileProcessor extends FileProcessor{
 
     // reads through CSV file containing CPL election data and returns a corresponding CPLElection object
     public Election processFile(File inputFile){
-        Scanner s = new Scanner(inputFile);
+        // create Scanner to read file
+        Scanner s;
+        try {
+            s = new Scanner(inputFile);
+        }
+        catch (FileNotFoundException ex) {
+            // TODO:: Modify behavior here?
+            System.out.println("ERROR: File not found");
+            return null;
+        }
         s.nextLine(); // skip over line specifying election type
 
         // retrieve information from file, knowing it is formatted as specified in the SRS
-        int numParties = s.nextLine();
+        int numParties = Integer.parseInt(s.nextLine());
         String[] partiesStrings = s.nextLine().split(",");
 
         // create array of CPLParty objects for each party in the CPL election
@@ -23,8 +33,8 @@ public class CPLFileProcessor extends FileProcessor{
             parties[i] = new CPLParty(partiesStrings[i], i, cands);
         }
 
-        int numSeats = s.nextLine();
-        int numBallots = s.nextLine();
+        int numSeats = Integer.parseInt(s.nextLine());
+        int numBallots = Integer.parseInt(s.nextLine());
 
         // create array of CPLBallot objects, representing all ballots cast in the CPL election
         CPLBallot[] ballots = new CPLBallot[numBallots];

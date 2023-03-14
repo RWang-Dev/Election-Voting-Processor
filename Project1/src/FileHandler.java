@@ -34,7 +34,7 @@ public class FileHandler{
             getFileNameFromInput();
         }
 
-        File fp = fileopen(this.filename);
+        File fp = new File(this.filename);
         return fp;
     }
 }

@@ -34,6 +34,7 @@ class CPLParty extends Voteable {
         for (int i = 0; i<numSeats; i++){
             out[i] = this.rankedPartyCandidates[i];
         }
+        return out;
     }
 
     public int getNumSeatsAllotedFirst() {

@@ -6,18 +6,18 @@ import java.io.File;
 import java.io.FileWriter; // TODO:: may need to add to UML class diagram?
 
 public class CPLElection extends Election {
-//    private CPLParty[] parties; // Just realized this is just the same as voteables - TODO:: remove comment
+    private CPLParty[] parties; // Just realized this is just the same as voteables - TODO:: remove comment
     private int numSeats;
     private String[] results;
 
     // constructor assigns values to instance variables
     public CPLElection(CPLParty[] parties, Ballot[] ballots, int numballots, int numSeats){
-        this.voteables = parties;
+        this.parties = parties;
         this.numVoteables = parties.length;
         this.ballots = ballots;
         this.numBallots = numballots;
         this.numSeats = numSeats;
-        this.results = "";
+        this.results = new String[numSeats];
     }
 
     public int getNumSeats() {
@@ -41,12 +41,12 @@ public class CPLElection extends Election {
     // implements largest remainder algorithm
     public void assignSeats(){
         // quota is the amount of votes to automatically get a seat
-        int quota = int(Math.ceil(numBallots / numSeats)); // is it correct to do ceiling on it?
+        int quota = Math.round(numBallots / numSeats); // TODO:: is it correct to do rounding on it?
         int seatsAllocated = 0;
 
         // first allocation of seats that can be assigned solely by meeting quota
-        for (CPLParty party : voteables){
-            int seats = int(Math.floor(party.getNumVotes() / quota)); // seats that can be assigned without further work
+        for (CPLParty party : parties){
+            int seats = (int) (Math.floor(party.getNumVotes() / quota)); // seats that can be assigned without further work
             seatsAllocated += seats;
             party.setNumSeatsAllotedFirst(seats);
             // subtract votes used towards seats already alloted to this party
@@ -60,7 +60,7 @@ public class CPLElection extends Election {
             CPLParty maxParty = null;
             CPLParty[] tieForMax = CPLParty[numVoteables]; // tracks tied parties for maxvotes, in case of tie
             boolean isTie = false;
-            for (CPLParty party : voteables){ // loop through all parties to find the one with the most remaining votes
+            for (CPLParty party : parties){ // loop through all parties to find the one with the most remaining votes
                 if (party.getNumVotesAfterFirstAllocation() > max){ // new max found
                     max = party.getNumVotesAfterFirstAllocation();
                     maxParty = party;
@@ -89,7 +89,7 @@ public class CPLElection extends Election {
 
         // all seats are now fully allocated. Now add to results[]
         int k = 0;
-        for (CPLParty party : voteables){ // loop through all parties
+        for (CPLParty party : parties){ // loop through all parties
             String[] partycands = party.getPartyCandidates();
             int partySeats = party.getNumSeatsAllotedFirst() + party.getNumSeatsAllotedSecond();
             for (int i = 0; i < partySeats; i++){ // for each seat alloted to party, add candidate to results[]
@@ -128,7 +128,7 @@ public class CPLElection extends Election {
         out += "Parties, Votes, First Allocation of Seats, Remaining Votes, Second Allocation of Seats, " +
                 "Final Seat Total, % of vote to % of seats\n"; // headers of table columns
         out += "-,-,-,-,-,-,-\n";
-        for (CPLParty party : voteables){ // loop through each party and add its info to auditfile on a single line
+        for (CPLParty party : parties){ // loop through each party and add its info to auditfile on a single line
             out += party.getName() + ",";
             out += String.valueOf(party.getNumVotes()) + ",";
             out += String.valueOf(party.getNumSeatsAllotedFirst()) + ",";
