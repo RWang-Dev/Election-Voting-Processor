@@ -86,7 +86,13 @@ public class CPLElection extends Election {
 
             seatsAllocated ++;
             maxParty.setNumSeatsAllotedSecond(1); // allocate additional seat for maxparty
-            maxParty.setNumVotesAfterFirstAllocation(-1); // so that it no longer is considered for more seats
+            maxParty.setNumVotesAfterFirstAllocation(-1); // so that it no longer is considered for remainding seats
+        }
+
+        // since some parties got NumVotesAfterFirstAllocation changed to -1, we have to reset it to its original value
+        for (CPLParty party : parties){
+            int numSeatsAfterFirstAlloc = party.getNumVotes() - party.getNumSeatsAllotedFirst() * quota;
+            party.setNumVotesAfterFirstAllocation(numSeatsAfterFirstAlloc);
         }
 
         // all seats are now fully allocated. Now add to results[]
@@ -158,9 +164,9 @@ public class CPLElection extends Election {
             out += String.valueOf(party.getNumSeatsAllotedSecond()) + ",";
             int partyTotalSeats = party.getNumSeatsAllotedFirst() + party.getNumSeatsAllotedSecond();
             out += String.valueOf(partyTotalSeats) + ",";
-            int percSeats = Math.round(partyTotalSeats / numSeats);
-            int percVote = Math.round(party.getNumVotes() / numBallots);
-            out += String.valueOf(percVote) + "% / " + String.valueOf(percVote) + "% \n";
+            int percSeats = Math.round(100 * partyTotalSeats / numSeats);
+            int percVote = Math.round(100 * party.getNumVotes() / numBallots);
+            out += String.valueOf(percVote) + "% / " + String.valueOf(percSeats) + "% \n";
         }
         out += "-,-,-,-,-,-,-\n";
 
