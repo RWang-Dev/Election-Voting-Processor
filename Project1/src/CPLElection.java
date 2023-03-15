@@ -58,7 +58,7 @@ public class CPLElection extends Election {
         while (seatsAllocated < numSeats){
             int max = -1;
             CPLParty maxParty = null;
-            CPLParty[] tieForMax = CPLParty[numVoteables]; // tracks tied parties for maxvotes, in case of tie
+            CPLParty[] tieForMax = new CPLParty[numVoteables]; // tracks tied parties for maxvotes, in case of tie
             boolean isTie = false;
             for (CPLParty party : parties){ // loop through all parties to find the one with the most remaining votes
                 if (party.getNumVotesAfterFirstAllocation() > max){ // new max found
@@ -79,7 +79,7 @@ public class CPLElection extends Election {
             }
 
             if (isTie){ // if there is a tie for the max, then must break tie to determine winner of seat
-                maxParty = breakTie(tieForMax);
+                maxParty = tieForMax[breakTie(tieForMax)];
             }
 
             seatsAllocated ++;

@@ -28,8 +28,8 @@ public abstract class Election{
 
     public abstract void produceAuditFile();
 
-    // takes in an array of Voteables and randomly returns a winner/loser depending on scenario
-    public Voteable breakTie(Voteable[] voteable){
+    // takes in an array of Voteables and randomly returns an index of winner/loser depending on scenario
+    public int breakTie(Voteable[] voteable){
         double rand = 0.0;
         Random r = new Random();
 
@@ -60,7 +60,7 @@ public abstract class Election{
             }
         }
 
-        return voteable[minIdx]; // return winner/loser
+        return minIdx; // return index of winner/loser
     }
 
     // prompt user to input date into the console (can be used when creating audit file)
