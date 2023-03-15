@@ -3,4 +3,9 @@
 
 public class IRElection extends Election{
     // TODO:: Implement
+    public void runElection(){}
+
+    public void printElectionResults(){}
+
+    public void produceAuditFile(){}
 }

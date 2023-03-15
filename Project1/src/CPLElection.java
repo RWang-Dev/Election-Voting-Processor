@@ -4,6 +4,8 @@
 import java.lang.Math;
 import java.io.File;
 import java.io.FileWriter; // TODO:: may need to add to UML class diagram?
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class CPLElection extends Election {
     private CPLParty[] parties; // Just realized this is just the same as voteables - TODO:: remove comment
@@ -11,7 +13,7 @@ public class CPLElection extends Election {
     private String[] results;
 
     // constructor assigns values to instance variables
-    public CPLElection(CPLParty[] parties, Ballot[] ballots, int numballots, int numSeats){
+    public CPLElection(CPLParty[] parties, CPLBallot[] ballots, int numballots, int numSeats){
         this.parties = parties;
         this.numVoteables = parties.length;
         this.ballots = ballots;
@@ -102,7 +104,7 @@ public class CPLElection extends Election {
     // executes the CPL largest remainder algorithm
     public void runElection(){
         CPLParty tempParty;
-        for (CPLBallot ballot : ballots){ // tally votes and assign to each party
+        for (CPLBallot ballot : (CPLBallot[]) ballots){ // tally votes and assign to each party
             tempParty = ballot.getPartyChoice();
             tempParty.incrementVotes(1);
         }
@@ -120,9 +122,29 @@ public class CPLElection extends Election {
     // creates audit file detailing the allocation of seats. should only be called after runElection()
     public void produceAuditFile(){
         File f = new File("auditfile.csv");
-        f.createNewFile();
 
-        FileWriter fp = new FileWriter("auditfile.csv", false); // clears data in file previously
+        try {
+            boolean fileCreated = f.createNewFile();
+            if (!fileCreated){ // if file already exists, delete it and try to create again
+                f.delete();
+                f.createNewFile();
+            }
+        }
+        catch (IOException e){ // catches possible IO errors when creating file
+            System.out.println("ERROR: IOException");
+            return;
+        }
+
+        // create FileWriter to write to File
+        FileWriter fp;
+        try {
+            fp = new FileWriter("auditfile.csv", false);
+        }
+        catch(IOException e){
+            System.out.println("ERROR: Unable to write to file");
+            return;
+        }
+
         String out = "";
         out += "-,-,-,-,-,-,-\n";
         out += "Parties, Votes, First Allocation of Seats, Remaining Votes, Second Allocation of Seats, " +
@@ -142,8 +164,14 @@ public class CPLElection extends Election {
         }
         out += "-,-,-,-,-,-,-\n";
 
-        fp.write(out); // write output string to file
-        fp.close(); // close file
+        try {
+            fp.write(out); // write output string to file
+            fp.close(); // close file
+        }
+        catch (IOException e) {
+            System.out.println("ERROR: writing to file failed, IOException");
+            return;
+        }
     }
 
 }
