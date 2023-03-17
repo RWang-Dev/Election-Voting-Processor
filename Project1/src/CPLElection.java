@@ -125,7 +125,32 @@ public class CPLElection extends Election {
         }
     }
 
-    // creates audit file detailing the allocation of seats. should only be called after runElection()
+    public String produceAuditFileString(){
+        String out = "";
+        String lineOfDashes = "-".repeat(175) + "\n";
+        String columnHeadersLine1 = String.format("%-20s | %-10s | %-11s | %-9s | %-10s | %-5s | %-10s \n",
+                "", "", "First", "Remaining", "Second", "Final", "% of Vote");
+        String columnHeadersLine2 = String.format("%-20s | %-10s | %-11s | %-9s | %-10s | %-5s | %-10s \n",
+                "Parties", "Votes", "Allocation", "Votes", "Allocation", "Seat", "to");
+        String columnHeadersLine3 = String.format("%-20s | %-10s | %-11s | %-9s | %-10s | %-5s | %-10s \n",
+                "", "", "Of Seats", "", "Of Seats", "Total", "% of Seats");
+
+        out += lineOfDashes + columnHeadersLine1 + columnHeadersLine2 + columnHeadersLine3 + lineOfDashes;
+
+        for (CPLParty party : parties){ // loop through each party and add its info to auditfile on a single line
+            int partyTotalSeats = party.getNumSeatsAllotedFirst() + party.getNumSeatsAllotedSecond();
+            int percSeats = Math.round(100 * partyTotalSeats / numSeats);
+            int percVote = Math.round(100 * party.getNumVotes() / numBallots);
+            String percString = String.valueOf(percVote) + "% / " + String.valueOf(percSeats) + "% \n";
+            out += String.format("%-20s | %-10d | %-11d | %-9d | %-10d | %-5d | %-10s \n", party.getName(),
+                    party.getNumVotes(), party.getNumSeatsAllotedFirst(), party.getNumVotesAfterFirstAllocation(),
+                    party.getNumSeatsAllotedSecond(), partyTotalSeats, percString);
+        }
+
+        out += lineOfDashes;
+        return out;
+    }
+
     public void produceAuditFile(){
         File f = new File("auditfile.csv");
 
@@ -144,31 +169,14 @@ public class CPLElection extends Election {
         // create FileWriter to write to File
         FileWriter fp;
         try {
-            fp = new FileWriter("auditfile.csv", false);
+            fp = new FileWriter("auditfile.txt", false);
         }
         catch(IOException e){
             System.out.println("ERROR: Unable to write to file");
             return;
         }
 
-        String out = "";
-        out += "-,-,-,-,-,-,-\n";
-        out += "Parties, Votes, First Allocation of Seats, Remaining Votes, Second Allocation of Seats, " +
-                "Final Seat Total, % of vote to % of seats\n"; // headers of table columns
-        out += "-,-,-,-,-,-,-\n";
-        for (CPLParty party : parties){ // loop through each party and add its info to auditfile on a single line
-            out += party.getName() + ",";
-            out += String.valueOf(party.getNumVotes()) + ",";
-            out += String.valueOf(party.getNumSeatsAllotedFirst()) + ",";
-            out += String.valueOf(party.getNumVotesAfterFirstAllocation()) + ",";
-            out += String.valueOf(party.getNumSeatsAllotedSecond()) + ",";
-            int partyTotalSeats = party.getNumSeatsAllotedFirst() + party.getNumSeatsAllotedSecond();
-            out += String.valueOf(partyTotalSeats) + ",";
-            int percSeats = Math.round(100 * partyTotalSeats / numSeats);
-            int percVote = Math.round(100 * party.getNumVotes() / numBallots);
-            out += String.valueOf(percVote) + "% / " + String.valueOf(percSeats) + "% \n";
-        }
-        out += "-,-,-,-,-,-,-\n";
+        String out = produceAuditFileString();
 
         try {
             fp.write(out); // write output string to file
