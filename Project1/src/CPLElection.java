@@ -1,5 +1,6 @@
+// CPLElection.java represents a single CPL election and conducts and necessary algorithms for it
 // inherits from abstract class Election
-// represents a single CPL election and conducts the necessary algorithms
+// author: Alex Iliarski (iliar004)
 
 import java.lang.Math;
 import java.io.File;
@@ -7,12 +8,21 @@ import java.io.FileWriter; // TODO:: may need to add to UML class diagram?
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+/**
+ * Represents a single CPL election and conducts the necessary algorithms for it
+ */
 public class CPLElection extends Election {
     private CPLParty[] parties; // Just realized this is just the same as voteables - TODO:: remove comment
     private int numSeats;
     private String[] results;
 
-    // constructor assigns values to instance variables
+    /**
+     * Creates a CPLElection object and assigns values to instance variables
+     * @param parties A CPLParty[] of the parties to vote for in a CPL election
+     * @param ballots A CPLBallot[] of all the ballots cast in a CPL election
+     * @param numballots An int representing the number of ballots cast in a CPL election
+     * @param numSeats An int representing the number of seats to be filled in the CPL election
+     */
     public CPLElection(CPLParty[] parties, CPLBallot[] ballots, int numballots, int numSeats){
         this.parties = parties;
         this.numVoteables = parties.length;
@@ -22,15 +32,28 @@ public class CPLElection extends Election {
         this.results = new String[numSeats];
     }
 
+    /**
+     * gets the number of seats to be filled in the CPL election
+     * @return An int representing the number of seats to be filled in the CPL election
+     */
     public int getNumSeats() {
         return numSeats;
     }
 
+    /**
+     * gets the names of candidates that won seats in the CPL election
+     * @return A String[] of the names of candidates that won seats in the CPL election
+     */
     public String[] getResults() {
         return results;
     }
 
     // assigns every value in input array to null
+
+    /**
+     * Assigns every value in the input array to null
+     * @param arr A CPLParty[] array of all null values
+     */
     public void clearArray(CPLParty[] arr){
         for (int i = 0; i < arr.length; i++){
             if (arr[i] != null){
@@ -39,7 +62,12 @@ public class CPLElection extends Election {
         }
     }
 
-    // first allocation of seats that can be assigned solely by meeting quota
+    /**
+     * Conducts the first allocation of seats in a CPL election, that can be assigned solely by meeting the quota
+     * @param quota An int representing the number of votes needed to automatically be assigned a seat
+     * @param seatsAllocated An int representing the number of seats priorly allocated (always 0)
+     * @return An int representing the number of seats that were allocated in this round of allocation
+     */
     public int firstSeatAlloc(int quota, int seatsAllocated){
         for (CPLParty party : parties){
             int seats = (int) (Math.floor(party.getNumVotes() / quota)); // seats that can be assigned without further work
@@ -51,7 +79,11 @@ public class CPLElection extends Election {
         return seatsAllocated;
     }
 
-    // second allocation of seats, go in order of most votes remaining after initial allocation of seats
+    /**
+     * conducts second allocation of seats, goes in order of most votes remaining after initial allocation of seats (largest remainder algorithm)
+     * @param quota An int representing the number of votes needed to automatically be assigned a seat
+     * @param seatsAllocated An int representing the number of seats priorly allocated
+     */
     public void secondSeatAlloc(int quota, int seatsAllocated){
         while (seatsAllocated < numSeats){
             int max = -1;
@@ -86,7 +118,10 @@ public class CPLElection extends Election {
         }
     }
 
-    // since some parties got NumVotesAfterFirstAllocation changed to -1, we have to reset it to its original value
+    /**
+     * since some parties got NumVotesAfterFirstAllocation changed to -1, we have to reset it to its original value
+     * @param quota An int representing the number of votes needed to automatically be assigned a seat
+     */
     public void resetNumVotesFirstAlloc(int quota){
         for (CPLParty party : parties){
             int numSeatsAfterFirstAlloc = party.getNumVotes() - party.getNumSeatsAllotedFirst() * quota;
@@ -94,7 +129,9 @@ public class CPLElection extends Election {
         }
     }
 
-    // all seats are now fully allocated. Now add to results[]
+    /**
+     * After all seats are fully allocated, the names of seat-winning candidates are added to results[]
+     */
     public void addToResults(){
         int k = 0;
         for (CPLParty party : parties){ // loop through all parties
@@ -107,7 +144,9 @@ public class CPLElection extends Election {
         }
     }
 
-    // implements largest remainder algorithm
+    /**
+     * Implements the largest remainder algorithm of CPL election seat distribution
+     */
     public void assignSeats(){
         // quota is the amount of votes to automatically get a seat
         int quota = Math.round(numBallots / numSeats); // TODO:: is it correct to do rounding on it?
@@ -126,7 +165,9 @@ public class CPLElection extends Election {
         addToResults();
     }
 
-    // executes the CPL largest remainder algorithm
+    /**
+     * Executes the CPL election algorithms (largest remainder algorithm)
+     */
     public void runElection(){
         CPLParty tempParty;
         for (CPLBallot ballot : (CPLBallot[]) ballots){ // tally votes and assign to each party
@@ -136,7 +177,9 @@ public class CPLElection extends Election {
         assignSeats(); // executes largest remainder algorithm
     }
 
-    // prints winners of seats in CPL election results to console. should only be called after runElection()
+    /**
+     * prints winners of seats in CPL election results to console. should only be called after runElection()
+     */
     public void printElectionResults(){
         System.out.println("The winners of seats are: ");
         for (String cand : results){ // loop through each candidate in results[] and print it
@@ -144,7 +187,10 @@ public class CPLElection extends Election {
         }
     }
 
-    // helper function for produceAuditFile(), does brunt of formatting of output txt file
+    /**
+     * helper function for produceAuditFile(), does brunt of formatting of output txt file
+     * @return A String that should be pasted into the output auditfile.txt
+     */
     public String produceAuditFileString(){
         String out = "";
         String lineOfDashes = "-".repeat(175) + "\n";
@@ -171,7 +217,9 @@ public class CPLElection extends Election {
         return out;
     }
 
-    // produces and audit file storing election results and seat distribution (auditfile.txt)
+    /**
+     * produces an audit file storing election results and seat distribution (auditfile.txt)
+     */
     public void produceAuditFile(){
         File f = new File("auditfile.csv");
 

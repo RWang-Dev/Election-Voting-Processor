@@ -1,10 +1,18 @@
-// main class, runs program
+// Main.java, is the main runner file for the program
+// author: Alex Iliarski (iliar004)
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+/**
+ * Main runner file for the program
+ */
 public class Main{
+    /**
+     * main() of the program
+     * @param args command line arguments to program
+     */
     public static void main(String[] args){
         FileHandler fh;
 
