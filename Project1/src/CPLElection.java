@@ -39,14 +39,8 @@ public class CPLElection extends Election {
         }
     }
 
-    // TODO:: Split this function into smaller method, potentially?
-    // implements largest remainder algorithm
-    public void assignSeats(){
-        // quota is the amount of votes to automatically get a seat
-        int quota = Math.round(numBallots / numSeats); // TODO:: is it correct to do rounding on it?
-        int seatsAllocated = 0;
-
-        // first allocation of seats that can be assigned solely by meeting quota
+    // first allocation of seats that can be assigned solely by meeting quota
+    public int firstSeatAlloc(int quota, int seatsAllocated){
         for (CPLParty party : parties){
             int seats = (int) (Math.floor(party.getNumVotes() / quota)); // seats that can be assigned without further work
             seatsAllocated += seats;
@@ -54,9 +48,11 @@ public class CPLElection extends Election {
             // subtract votes used towards seats already alloted to this party
             party.setNumVotesAfterFirstAllocation(party.getNumVotes() - quota*seats);
         }
+        return seatsAllocated;
+    }
 
-        // second allocation of seats
-        // go in order of most votes remaining after initial allocation of seats
+    // second allocation of seats, go in order of most votes remaining after initial allocation of seats
+    public void secondSeatAlloc(int quota, int seatsAllocated){
         while (seatsAllocated < numSeats){
             int max = -1;
             CPLParty maxParty = null;
@@ -88,14 +84,18 @@ public class CPLElection extends Election {
             maxParty.setNumSeatsAllotedSecond(1); // allocate additional seat for maxparty
             maxParty.setNumVotesAfterFirstAllocation(-1); // so that it no longer is considered for remainding seats
         }
+    }
 
-        // since some parties got NumVotesAfterFirstAllocation changed to -1, we have to reset it to its original value
+    // since some parties got NumVotesAfterFirstAllocation changed to -1, we have to reset it to its original value
+    public void resetNumVotesFirstAlloc(){
         for (CPLParty party : parties){
             int numSeatsAfterFirstAlloc = party.getNumVotes() - party.getNumSeatsAllotedFirst() * quota;
             party.setNumVotesAfterFirstAllocation(numSeatsAfterFirstAlloc);
         }
+    }
 
-        // all seats are now fully allocated. Now add to results[]
+    // all seats are now fully allocated. Now add to results[]
+    public void addToResults(){
         int k = 0;
         for (CPLParty party : parties){ // loop through all parties
             String[] partycands = party.getPartyCandidates();
@@ -105,6 +105,25 @@ public class CPLElection extends Election {
                 k++;
             }
         }
+    }
+
+    // implements largest remainder algorithm
+    public void assignSeats(){
+        // quota is the amount of votes to automatically get a seat
+        int quota = Math.round(numBallots / numSeats); // TODO:: is it correct to do rounding on it?
+        int seatsAllocated = 0;
+
+        // first allocation of seats that can be assigned solely by meeting quota
+        seatsAllocated = firstSeatAlloc(quota, seatsAllocated);
+
+        // second allocation of seats
+        secondSeatAlloc(quota, seatsAllocated);
+
+        // since some parties got NumVotesAfterFirstAllocation changed to -1, we have to reset it to its original value
+        resetNumVotesFirstAlloc();
+
+        // all seats are now fully allocated. Now add to results[]
+        addToResults();
     }
 
     // executes the CPL largest remainder algorithm
@@ -125,6 +144,7 @@ public class CPLElection extends Election {
         }
     }
 
+    // helper function for produceAuditFile(), does brunt of formatting of output txt file
     public String produceAuditFileString(){
         String out = "";
         String lineOfDashes = "-".repeat(175) + "\n";
@@ -151,6 +171,7 @@ public class CPLElection extends Election {
         return out;
     }
 
+    // produces and audit file storing election results and seat distribution (auditfile.txt)
     public void produceAuditFile(){
         File f = new File("auditfile.csv");
 
