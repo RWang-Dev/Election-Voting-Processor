@@ -87,7 +87,7 @@ public class CPLElection extends Election {
     }
 
     // since some parties got NumVotesAfterFirstAllocation changed to -1, we have to reset it to its original value
-    public void resetNumVotesFirstAlloc(){
+    public void resetNumVotesFirstAlloc(int quota){
         for (CPLParty party : parties){
             int numSeatsAfterFirstAlloc = party.getNumVotes() - party.getNumSeatsAllotedFirst() * quota;
             party.setNumVotesAfterFirstAllocation(numSeatsAfterFirstAlloc);
@@ -120,7 +120,7 @@ public class CPLElection extends Election {
         secondSeatAlloc(quota, seatsAllocated);
 
         // since some parties got NumVotesAfterFirstAllocation changed to -1, we have to reset it to its original value
-        resetNumVotesFirstAlloc();
+        resetNumVotesFirstAlloc(quota);
 
         // all seats are now fully allocated. Now add to results[]
         addToResults();
