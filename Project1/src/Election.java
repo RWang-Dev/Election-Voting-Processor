@@ -1,35 +1,65 @@
-// Abstract Election class that IRElection and CPLElection inherit from
+// Election.java contains abstract election class that IRElection and CPLElection inherit from
+// Abstractly represents an Election type and contains its algorithms
+// author: Alex Iliarski (iliar004(
 
 import java.util.Random;
 import java.lang.Math;
 import java.util.Scanner;
 
+/**
+ * Abstractly represents an Election type and contains its algorithms
+ */
 public abstract class Election{
     protected Voteable[] voteables;
     protected int numVoteables;
     protected Ballot[] ballots;
     protected int numBallots;
 
+    /**
+     * gets the list of all Voteable objects in an election
+     * @return A Voteable[] of all votable objects in an election
+     */
     public Voteable[] getVoteables() {
         return voteables;
     }
 
+    /**
+     * gets the number of Vateable objects in an election
+     * @return An int representing the number of Voteable objects in an election
+     */
     public int getNumVoteables() {
         return numVoteables;
     }
 
+    /**
+     * gets the number of ballots cast in an election
+     * @return An int representing the number of ballots cast in an election
+     */
     public int getNumBallots() {
         return numBallots;
     }
 
+    /**
+     * Runs the election algorithm, determining the winner(s)
+     */
     public abstract void runElection();
 
+    /**
+     * Prints the results of the election to the console
+     */
     public abstract void printElectionResults();
 
+    /**
+     * Creates the auditfile.txt file in the same directory, containing the results of the election
+     */
     public abstract void produceAuditFile();
 
-    // takes in an array of Voteables and randomly returns a winner/loser depending on scenario
-    public Voteable breakTie(Voteable[] voteable){
+    /**
+     * takes in an array of Voteables and randomly returns an index of the winner/loser depending on scenario
+     * @param voteable The list of voteables that needs to have a tie broken for
+     * @return An int representing the index of the input array of the Voteable that is designated as the winner/loser in a tied scenario
+     */
+    public int breakTie(Voteable[] voteable){
         double rand = 0.0;
         Random r = new Random();
 
@@ -60,10 +90,14 @@ public abstract class Election{
             }
         }
 
-        return voteable[minIdx]; // return winner/loser
+        return minIdx; // return index of winner/loser
     }
 
-    // prompt user to input date into the console (can be used when creating audit file)
+    // TODO:: Do we actually use this function?
+    /**
+     * prompt user to input date into the console (can be used when creating audit file)
+     * @return A String representing the date of the election in (mm/dd/yyyy) format
+     */
     public String promptUserForDate(){
         Scanner in = new Scanner(System.in);
         // prompt user for input

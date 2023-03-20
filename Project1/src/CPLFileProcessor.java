@@ -1,14 +1,25 @@
-// inherits from abstract class FileProcessor
+// CPLFileProcessor.java inherits from abstract class FileProcessor
 // Handles processing of a CSV file containing information about a CPL election
+// author: Alex Iliarski (iliar004)
 
 import java.util.Scanner;
 import java.io.FileNotFoundException;
 import java.io.File;
 
+/**
+ * Handles processing of input CSV file containing information about a CPL election
+ */
 public class CPLFileProcessor extends FileProcessor{
+    /**
+     * Creates a new CPLFileProcessor object
+     */
     public CPLFileProcessor(){}
 
-    // reads through CSV file containing CPL election data and returns a corresponding CPLElection object
+    /**
+     * reads through CSV file containing CPL election data and returns a corresponding CPLElection object
+     * @param inputFile A File object for the input CSV file containing CPL election information
+     * @return A CPLElection object containing all the information gathered from the input file
+     */
     public Election processFile(File inputFile){
         // create Scanner to read file
         Scanner s;
