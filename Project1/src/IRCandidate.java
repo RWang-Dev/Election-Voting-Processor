@@ -12,9 +12,11 @@ public class IRCandidate extends Voteable{
     }
 
     public void updateVoteCountHistory(){
+
         voteCountHistory.add(this.numVotes);
     }
     public ArrayList<Integer> getVoteCountHistory(){
+
         return this.voteCountHistory;
     }
 

@@ -2,6 +2,7 @@
 // Handles processing of a CSV file containing information about an IR election
 
 import java.io.FileNotFoundException;
+import java.util.PriorityQueue;
 import java.util.Scanner;
 import java.io.File;
 
@@ -32,18 +33,41 @@ public class IRFileProcessor extends FileProcessor{
 
         int numBallots = Integer.parseInt(s.nextLine());
         IRBallot[] ballots = new IRBallot[numBallots];
-        for(int i = 0; i<numCands; i++){
-            String[] currBallot = s.nextLine().split(",");
-            ballots[i] = new IRBallot(currBallot);
+        for(int i = 0; i<numBallots; i++){
+            String[] rankings = s.nextLine().split(",");
+            String[] currBallot = new String[numCands];
+            for(int k = 0; k < numCands; k++){
+                currBallot[Integer.parseInt(rankings[k])] = candStrings[k];
+            }
+
+            PriorityQueue<IRCandidate> temp = new PriorityQueue<>();
+            for(String str : currBallot){
+                IRCandidate curr = new IRCandidate(str, i);
+                temp.add(curr);
+            }
+            IRBallot resBallot = new IRBallot(temp);
+            ballots[i] = resBallot;
+
         }
         s.close();
 
-        return null;
+        int n = candidates.length;
+        for (int j = 1; j < n; j++) {
+            IRCandidate curr = candidates[j];
+            int key = candidates[j].numVotes;
+            int i = j - 1;
+            while ((i > -1) && (candidates[i].numVotes > key)) {
+                candidates[i + 1] = candidates[i];
+                i--;
+            }
+            candidates[i + 1] = curr;
+        }
+        IRElection res = new IRElection(candidates, ballots);
+        return res;
     }
     public void countVotes(IRBallot[] ballots){
-
     }
     public IRCandidate[] rankCandidates(IRCandidate[] candidates){
-
+        return null;
     }
 }

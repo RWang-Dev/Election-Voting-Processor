@@ -12,6 +12,17 @@ public class IRBallot extends Ballot{
     }
 
     public void redistributeVote(){
-        candidatesQueue.pop();
+//        PriorityQueue<IRCandidate> temp = new PriorityQueue<>();
+//        while(this.candidatesQueue.size() > 1){
+//            temp.add(this.candidatesQueue.poll());
+//        }
+//        this.candidatesQueue.clear();
+//        this.candidatesQueue = temp;
+        this.candidatesQueue.poll();
     }
+
+    public PriorityQueue<IRCandidate> getCandidatesQueue(){
+        return this.candidatesQueue;
+    }
+
 }
