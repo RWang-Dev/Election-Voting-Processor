@@ -1,6 +1,8 @@
 // FileHandler.java, handles creating File object and possibly getting filename from user input
 // author: Alex Iliarski (iliar004)
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.Scanner;
 import java.io.File;
 
