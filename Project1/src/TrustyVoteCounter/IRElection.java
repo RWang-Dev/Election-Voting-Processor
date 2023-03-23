@@ -1,4 +1,4 @@
-// inherits from abstract class Election
+package TrustyVoteCounter;// inherits from abstract class Election
 // represents a single IR election and conducts the necessary algorithms
 
 import java.util.ArrayList;
@@ -120,9 +120,9 @@ public class IRElection extends Election{
         int n = rankedCandidates.length;
         for (int j = 1; j < n; j++) {
             IRCandidate curr = rankedCandidates[j];
-            int key = rankedCandidates[j].numVotes;
+            int key = rankedCandidates[j].getNumVotes();
             int i = j - 1;
-            while ((i > -1) && (rankedCandidates[i].numVotes > key)) {
+            while ((i > -1) && (rankedCandidates[i].getNumVotes() > key)) {
                 rankedCandidates[i + 1] = rankedCandidates[i];
                 i--;
             }
