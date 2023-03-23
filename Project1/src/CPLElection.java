@@ -71,11 +71,24 @@ public class CPLElection extends Election {
      */
     public int firstSeatAlloc(int quota, int seatsAllocated){
         for (CPLParty party : parties){
+            if(quota == 0){
+                break;
+            }
             int seats = (int) (Math.floor(party.getNumVotes() / quota)); // seats that can be assigned without further work
+
+            // Makes sure a party doesn't get more seats than they have candidates
+            if (party.getNumPartyCandidates() < seats){
+                seats = party.getNumPartyCandidates();
+                party.setNumVotesAfterFirstAllocation(-1);
+            }
+            else{
+                party.setNumVotesAfterFirstAllocation(party.getNumVotes() - quota*seats);
+            }
+
             seatsAllocated += seats;
             party.setNumSeatsAllotedFirst(seats);
             // subtract votes used towards seats already alloted to this party
-            party.setNumVotesAfterFirstAllocation(party.getNumVotes() - quota*seats);
+
         }
         return seatsAllocated;
     }
@@ -207,7 +220,14 @@ public class CPLElection extends Election {
         for (CPLParty party : parties){ // loop through each party and add its info to auditfile on a single line
             int partyTotalSeats = party.getNumSeatsAllotedFirst() + party.getNumSeatsAllotedSecond();
             int percSeats = Math.round(100 * partyTotalSeats / numSeats);
-            int percVote = Math.round(100 * party.getNumVotes() / numBallots);
+
+            int percVote;
+            if(numBallots == 0){
+                percVote = 0;
+            }
+            else{
+                percVote = Math.round(100 * party.getNumVotes() / numBallots);
+            }
             String percString = String.valueOf(percVote) + "% / " + String.valueOf(percSeats) + "% \n";
             out += String.format("%-20s | %-10d | %-11d | %-9d | %-10d | %-5d | %-10s \n", party.getName(),
                     party.getNumVotes(), party.getNumSeatsAllotedFirst(), party.getNumVotesAfterFirstAllocation(),
