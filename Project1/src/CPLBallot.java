@@ -1,4 +1,3 @@
-package TrustyVoteCounter;// CPLBallot.java contains class CPLBallot, which inherits from Ballot
 // A CPLBallot represents a single ballot in a CPL election.
 // author: Alex Iliarski (iliar004)
 

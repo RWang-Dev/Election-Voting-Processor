@@ -1,4 +1,3 @@
-package TrustyVoteCounter;// FileProcessor.java is an abstract FileProcessor class from which IRFileProcessor and CPLFileProcessor inherit
 // author: Alex Iliarski (iliar004)
 
 import java.io.File;

@@ -1,4 +1,3 @@
-package TrustyVoteCounter;// inherits from abstract class Election
 // represents a single IR election and conducts the necessary algorithms
 
 import java.util.ArrayList;

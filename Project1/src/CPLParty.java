@@ -1,4 +1,3 @@
-package TrustyVoteCounter;// CPLParty.java represents a party object that voters vote for in a CPL election. Inherits from abstract class Voteable
 // author: Alex Iliarski (iliar004)
 
 /**

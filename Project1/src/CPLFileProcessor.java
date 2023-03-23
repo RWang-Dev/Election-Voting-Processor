@@ -1,4 +1,3 @@
-package TrustyVoteCounter;// CPLFileProcessor.java inherits from abstract class FileProcessor
 // Handles processing of a CSV file containing information about a CPL election
 // author: Alex Iliarski (iliar004)
 

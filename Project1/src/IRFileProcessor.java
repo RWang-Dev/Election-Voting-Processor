@@ -1,4 +1,3 @@
-package TrustyVoteCounter;// inherits from abstract class FileProcessor
 // Handles processing of a CSV file containing information about an IR election
 
 import java.io.FileNotFoundException;

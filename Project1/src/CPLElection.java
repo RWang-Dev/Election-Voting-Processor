@@ -1,4 +1,3 @@
-package TrustyVoteCounter;// CPLElection.java represents a single CPL election and conducts and necessary algorithms for it
 // inherits from abstract class Election
 // author: Alex Iliarski (iliar004)
 
@@ -241,7 +240,7 @@ public class CPLElection extends Election {
      * produces an audit file storing election results and seat distribution (auditfile.txt)
      */
     public void produceAuditFile(){
-        File f = new File("TrustyVoteCounter/auditfile.csv");
+        File f = new File("auditfile.csv");
 
         try {
             boolean fileCreated = f.createNewFile();
@@ -258,7 +257,7 @@ public class CPLElection extends Election {
         // create FileWriter to write to File
         FileWriter fp;
         try {
-            fp = new FileWriter("TrustyVoteCounter/auditfile.txt", false);
+            fp = new FileWriter("auditfile.txt", false);
         }
         catch(IOException e){
             System.out.println("ERROR: Unable to write to file");
