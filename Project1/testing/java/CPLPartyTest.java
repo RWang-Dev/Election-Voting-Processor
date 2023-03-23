@@ -39,8 +39,35 @@ class CPLPartyTest {
     }
 
     @Test
-    void testSetNumSeatsAllottedFirst(){
+    void testSetNumSeatsAllottedFirst() {
         party_empty.setNumSeatsAllotedFirst(2);
-        assertEquals(1,1);
+        /*
+         * This test was created when bug B_001 was still affecting the
+         * program. It might need to change depending on the implementation
+         * of the bug fix --Ethan
+         * */
+        assertEquals(2, party_empty.getNumSeatsAllotedFirst());
+
+        party_empty.setNumSeatsAllotedFirst(2);
+        assertEquals(0, party_empty.getNumSeatsAllotedFirst());
+        assertThrows(IllegalArgumentException.class, () -> party_empty.setNumSeatsAllotedFirst(-1));
+    }
+
+    @Test
+    void testSetNumSeatsAllottedSecond() {
+        party_empty.setNumSeatsAllotedSecond(0);
+        /*
+         * This test was created when bug B_001 was still affecting the
+         * program. It might need to change depending on the implementation
+         * of the bug fix --Ethan
+         * */
+        assertEquals(0, party_empty.getNumSeatsAllotedSecond());
+
+        party_empty.setNumSeatsAllotedSecond(1);
+        assertEquals(1, party_empty.getNumSeatsAllotedSecond());
+        assertThrows(IllegalArgumentException.class, () -> party_empty.setNumSeatsAllotedSecond(-1));
+
+        // Only one seat should ever be allocated in the second round of seat allocations
+        assertThrows(IllegalArgumentException.class, () -> party_empty.setNumSeatsAllotedSecond(2));
     }
 }

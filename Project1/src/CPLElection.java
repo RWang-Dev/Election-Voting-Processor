@@ -25,6 +25,7 @@ public class CPLElection extends Election {
      */
     public CPLElection(CPLParty[] parties, CPLBallot[] ballots, int numballots, int numSeats){
         this.parties = parties;
+        this.voteables = parties;
         this.numVoteables = parties.length;
         this.ballots = ballots;
         this.numBallots = numballots;
