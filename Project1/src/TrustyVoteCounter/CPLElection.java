@@ -1,15 +1,14 @@
-// CPLElection.java represents a single CPL election and conducts and necessary algorithms for it
+package TrustyVoteCounter;// CPLElection.java represents a single CPL election and conducts and necessary algorithms for it
 // inherits from abstract class Election
 // author: Alex Iliarski (iliar004)
 
 import java.lang.Math;
 import java.io.File;
 import java.io.FileWriter; // TODO:: may need to add to UML class diagram?
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
- * Represents a single CPL election and conducts the necessary algorithms for it
+ * A Closed Party list election. A CPLElection object is used to determine the winner in a given CPL election.
  */
 public class CPLElection extends Election {
     private CPLParty[] parties; // Just realized this is just the same as voteables - TODO:: remove comment
@@ -33,7 +32,7 @@ public class CPLElection extends Election {
     }
 
     /**
-     * gets the number of seats to be filled in the CPL election
+     * Gets the number of seats to be filled in the CPL election
      * @return An int representing the number of seats to be filled in the CPL election
      */
     public int getNumSeats() {
@@ -41,7 +40,7 @@ public class CPLElection extends Election {
     }
 
     /**
-     * gets the names of candidates that won seats in the CPL election
+     * Gets the names of candidates that won seats in the CPL election
      * @return A String[] of the names of candidates that won seats in the CPL election
      */
     public String[] getResults() {
@@ -80,7 +79,7 @@ public class CPLElection extends Election {
     }
 
     /**
-     * conducts second allocation of seats, goes in order of most votes remaining after initial allocation of seats (largest remainder algorithm)
+     * Conducts second allocation of seats in order of most votes remaining after initial allocation of seats (largest remainder algorithm)
      * @param quota An int representing the number of votes needed to automatically be assigned a seat
      * @param seatsAllocated An int representing the number of seats priorly allocated
      */
@@ -119,7 +118,7 @@ public class CPLElection extends Election {
     }
 
     /**
-     * since some parties got NumVotesAfterFirstAllocation changed to -1, we have to reset it to its original value
+     * Since some parties got NumVotesAfterFirstAllocation changed to -1, we have to reset it to its original value
      * @param quota An int representing the number of votes needed to automatically be assigned a seat
      */
     public void resetNumVotesFirstAlloc(int quota){
@@ -166,7 +165,7 @@ public class CPLElection extends Election {
     }
 
     /**
-     * Executes the CPL election algorithms (largest remainder algorithm)
+     * Executes the CPL election algorithms using the largest remainder algorithm
      */
     public void runElection(){
         CPLParty tempParty;
@@ -178,7 +177,7 @@ public class CPLElection extends Election {
     }
 
     /**
-     * prints winners of seats in CPL election results to console. should only be called after runElection()
+     * Prints winners of seats in CPL election results to console
      */
     public void printElectionResults(){
         System.out.println("The winners of seats are: ");
@@ -191,7 +190,7 @@ public class CPLElection extends Election {
      * helper function for produceAuditFile(), does brunt of formatting of output txt file
      * @return A String that should be pasted into the output auditfile.txt
      */
-    public String produceAuditFileString(){
+    private String produceAuditFileString(){
         String out = "";
         String lineOfDashes = "-".repeat(175) + "\n";
         String columnHeadersLine1 = String.format("%-20s | %-10s | %-11s | %-9s | %-10s | %-5s | %-10s \n",
@@ -221,7 +220,7 @@ public class CPLElection extends Election {
      * produces an audit file storing election results and seat distribution (auditfile.txt)
      */
     public void produceAuditFile(){
-        File f = new File("auditfile.csv");
+        File f = new File("TrustyVoteCounter/auditfile.csv");
 
         try {
             boolean fileCreated = f.createNewFile();
@@ -238,7 +237,7 @@ public class CPLElection extends Election {
         // create FileWriter to write to File
         FileWriter fp;
         try {
-            fp = new FileWriter("auditfile.txt", false);
+            fp = new FileWriter("TrustyVoteCounter/auditfile.txt", false);
         }
         catch(IOException e){
             System.out.println("ERROR: Unable to write to file");

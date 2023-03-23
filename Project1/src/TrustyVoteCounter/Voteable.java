@@ -1,11 +1,11 @@
-// Voteable.java is an abstract class representing an object that voters vote for in an election
+package TrustyVoteCounter;// Voteable.java is an abstract class representing an object that voters vote for in an election
 // CPLParty and IRCandidate inherit from Voteable
 // author: Alex Iliarski (iliar004)
 
 /**
  * Abstract class representing an object that voters vote for in an election
  */
-abstract class Voteable{
+public abstract class Voteable{
     protected String name;
     protected int numVotes;
     protected int ID;
