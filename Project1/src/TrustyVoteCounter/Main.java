@@ -4,14 +4,7 @@ package TrustyVoteCounter;// Main.java, is the main runner file for the program
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
-//<<<<<<< HEAD
-//// USELESS COMMENT BLAH BLAH
-//=======
 
-/**
- * Main runner file for the program
- */
-//>>>>>>> 996c0d39c3019428a6e00544eed278b4dbe08939
 public class Main{
     /**
      * main() of the program
