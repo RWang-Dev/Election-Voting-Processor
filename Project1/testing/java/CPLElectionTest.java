@@ -27,6 +27,7 @@ public class CPLElectionTest {
 
     @BeforeEach
     public void re_init(){
+
         good_election = new CPLElection(parties, ballots, ballots.length, 2);
         no_seats_election = new CPLElection(parties, ballots, ballots.length, 0);
         no_ballots_election = new CPLElection(parties, ballots_empty, ballots_empty.length, 2);
@@ -54,13 +55,7 @@ public class CPLElectionTest {
         assertArrayEquals(new String[0], no_seats_election.getResults());
     }
 
-    @Test
-    void clearArrayTest(){
-        good_election.clearArray( (CPLParty[]) good_election.getVoteables());
-        assertArrayEquals(new CPLParty[3], good_election.getVoteables());
-        good_election.clearArray( (CPLParty[]) good_election.getVoteables());
-        assertArrayEquals(new CPLParty[3], good_election.getVoteables());
-    }
+
 
     @Test
     void firstSeatAllocWithNiceInputTest(){
@@ -70,6 +65,16 @@ public class CPLElectionTest {
 
     @Test
     void secondSeatAllocWithNiceInputTest(){
+
+    }
+
+
+    @Test
+    void clearArrayTest(){
+        good_election.clearArray( (CPLParty[]) good_election.getVoteables());
+        assertArrayEquals(new CPLParty[3], good_election.getVoteables());
+        good_election.clearArray( (CPLParty[]) good_election.getVoteables());
+        assertArrayEquals(new CPLParty[3], good_election.getVoteables());
 
     }
 }
