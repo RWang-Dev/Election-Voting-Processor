@@ -1,4 +1,3 @@
-package TrustyVoteCounter;// Main.java, is the main runner file for the program
 // author: Alex Iliarski (iliar004)
 
 import java.io.File;

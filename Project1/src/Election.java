@@ -1,4 +1,3 @@
-package TrustyVoteCounter;// Election.java contains abstract election class that IRElection and CPLElection inherit from
 // Abstractly represents an Election type and contains its algorithms
 // author: Alex Iliarski (iliar004(
 

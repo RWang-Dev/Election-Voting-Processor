@@ -1,4 +1,3 @@
-package TrustyVoteCounter;// FileHandler.java, handles creating File object and possibly getting filename from user input
 // author: Alex Iliarski (iliar004)
 
 import java.util.Scanner;

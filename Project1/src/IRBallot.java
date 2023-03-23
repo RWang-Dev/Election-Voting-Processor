@@ -1,4 +1,3 @@
-package TrustyVoteCounter;// inherits from abstract class Ballot
 // represents a single ballot in an IR election
 
 import java.util.PriorityQueue;
