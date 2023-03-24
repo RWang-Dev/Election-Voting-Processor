@@ -1,6 +1,7 @@
 // inherits from abstract class Ballot
 // represents a single ballot in an IR election
 
+import java.util.ArrayList;
 import java.util.PriorityQueue;
 
 public class IRBallot extends Ballot{
@@ -10,10 +11,14 @@ public class IRBallot extends Ballot{
         this.candidatesQueue = candidatesQueue;
     }
 
-    public void redistributeVote(){
+    public void redistributeVote(ArrayList<IRCandidate> eliminatedCandidiates){
         System.out.println("candidatesQueue.poll");
 
         this.candidatesQueue.poll();
+
+        while(eliminatedCandidiates.contains(candidatesQueue.peek())){
+            this.candidatesQueue.poll();
+        }
 
     }
 

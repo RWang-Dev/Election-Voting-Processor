@@ -94,7 +94,7 @@ public class IRElection extends Election{
             }
             else{
 
-                eliminateCandidate(rankedCandidates[rankedCandidates.length-1]);
+                eliminateCandidate(rankedCandidates[rankedCandidates.length-(eliminatedCandidates.size() + 1)]);
             }
             System.out.println(rankedCandidates[0].getName() + ": " + rankedCandidates[0].numVotes);
         }
@@ -115,7 +115,7 @@ public class IRElection extends Election{
             if(((IRBallot)ballots[k]).getCandidatesQueue().peek().getName().equals(candidate.getName())){
                 System.out.println(((IRBallot)ballots[k]).getCandidatesQueue());
                 // If so, the poll the candidate from the ballot
-                ((IRBallot) ballots[k]).redistributeVote();
+                ((IRBallot) ballots[k]).redistributeVote(eliminatedCandidates);
                 System.out.println(((IRBallot)ballots[k]).getCandidatesQueue());
                 // Then, for each rankedCandidate, check to see if it is equal to the current ballot's second choice, which should
                 // now be in the front of the ballot queue after the eliminated candidate is gone
@@ -126,7 +126,8 @@ public class IRElection extends Election{
                         continue;
                     }
 
-                    if(rankedCandidates[i].getName().equals(((IRBallot)ballots[k]).getCandidatesQueue().peek().getName())){
+                    if(((IRBallot)ballots[k]).getCandidatesQueue().peek() != null &&
+                            rankedCandidates[i].getName().equals(((IRBallot)ballots[k]).getCandidatesQueue().peek().getName())){
 
                         rankedCandidates[i].incrementVotes(1);
                         break;

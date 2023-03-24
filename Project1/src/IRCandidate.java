@@ -40,7 +40,7 @@ public class IRCandidate extends Voteable implements Comparable<IRCandidate>{
     }
 
     public int compareTo(IRCandidate other){
-        return 0;
+        return 1;
     }
 
     public String toString(){
