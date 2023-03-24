@@ -46,8 +46,10 @@ public class IRFileProcessor extends FileProcessor{
         for(int i = 0; i<numBallots; i++){
             String[] rankings = s.nextLine().split(",");
             String[] currBallot = new String[numCands];
-            for(int k = 0; k < numCands; k++){
-                currBallot[Integer.parseInt(rankings[k])] = candStrings[k];
+            for(int k = 0; k < rankings.length; k++){
+                if(!rankings[k].equals("")){
+                    currBallot[Integer.parseInt(rankings[k]) - 1] = candStrings[k];
+                }
             }
 
             PriorityQueue<IRCandidate> temp = new PriorityQueue<>();
@@ -57,7 +59,6 @@ public class IRFileProcessor extends FileProcessor{
             }
             IRBallot resBallot = new IRBallot(temp);
             ballots[i] = resBallot;
-
         }
         s.close();
 
