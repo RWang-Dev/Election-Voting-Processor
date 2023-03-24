@@ -4,7 +4,7 @@
     <option name="OUTPUT_DIRECTORY" value="$PROJECT_DIR$/Project1/documentation" />
     <option name="OPTION_SCOPE" value="private" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="openjdk-19" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_19" project-jdk-name="19" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>

@@ -3,7 +3,6 @@
 
 import java.util.PriorityQueue;
 
-// TODO:: actually implement
 public class IRBallot extends Ballot{
     private PriorityQueue<IRCandidate> candidatesQueue;
 
@@ -12,13 +11,10 @@ public class IRBallot extends Ballot{
     }
 
     public void redistributeVote(){
-//        PriorityQueue<IRCandidate> temp = new PriorityQueue<>();
-//        while(this.candidatesQueue.size() > 1){
-//            temp.add(this.candidatesQueue.poll());
-//        }
-//        this.candidatesQueue.clear();
-//        this.candidatesQueue = temp;
+        System.out.println("candidatesQueue.poll");
+
         this.candidatesQueue.poll();
+
     }
 
     public PriorityQueue<IRCandidate> getCandidatesQueue(){

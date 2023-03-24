@@ -4,6 +4,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.util.Arrays;
 
 public class Main{
     /**
@@ -11,6 +12,7 @@ public class Main{
      * @param args command line arguments to program
      */
     public static void main(String[] args){
+
         FileHandler fh;
 
         // create FileHandler object based on if filename is input to command line or not

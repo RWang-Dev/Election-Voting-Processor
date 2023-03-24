@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /**
  * A candidate in an Instant Runoff election. IRCandidates are used in IRElections to determine the winner.
  */
-public class IRCandidate extends Voteable{
+public class IRCandidate extends Voteable implements Comparable<IRCandidate>{
     private ArrayList<Integer> voteCountHistory;
 
     /**
@@ -18,14 +18,14 @@ public class IRCandidate extends Voteable{
     public IRCandidate(String name, int ID){
         this.name = name;
         this.ID = ID;
-        voteCountHistory = new ArrayList<Integer>();
+        this.numVotes = 0;
+        this.voteCountHistory = new ArrayList<>();
     }
 
     /**
      * Updates the vote count history by adding the current number of votes to the history
      */
     public void updateVoteCountHistory(){
-
         voteCountHistory.add(this.numVotes);
     }
 
@@ -39,7 +39,12 @@ public class IRCandidate extends Voteable{
         return this.voteCountHistory;
     }
 
-//    public int compareTo(IRCandidate otherCandidate){
-//        return this.numVotes - otherCandidate.numVotes;
-//    }
+    public int compareTo(IRCandidate other){
+        return 0;
+    }
+
+    public String toString(){
+        return this.getName();
+    }
+
 }
