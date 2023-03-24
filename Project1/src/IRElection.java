@@ -133,7 +133,7 @@ public class IRElection extends Election{
      * Prints the election results to the screen
      */
     public void printElectionResults(){
-        System.out.println("The winner is: "+ rankedCandidates[0]);
+        System.out.println("The winner is: "+ rankedCandidates[0].getName());
     }
 
     /**
