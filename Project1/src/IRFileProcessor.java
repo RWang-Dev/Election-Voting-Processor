@@ -1,4 +1,3 @@
-// inherits from abstract class FileProcessor
 // Handles processing of a CSV file containing information about an IR election
 
 import java.io.FileNotFoundException;
@@ -6,10 +5,21 @@ import java.util.PriorityQueue;
 import java.util.Scanner;
 import java.io.File;
 
+/**
+ * Handles processing of an input CSV file containing information about an IR election
+ */
 public class IRFileProcessor extends FileProcessor{
+    /**
+     * Default constructor initializing the IRFileProcessor
+     */
     public IRFileProcessor(){}
 
-    // reads through CSV file containing CPL election data and returns a corresponding CPLElection object
+    /**
+     * Reads through CSV file containing IR election data and returns a corresponding IRElection object after
+     * parsing the necessary election data from the file.
+     * @param inputFile A File object for the input CSV file containing election information
+     * @return An IRElection object with all the candidates and ballots parsed from the file
+     */
     public Election processFile(File inputFile){
         Scanner s;
         try {
@@ -54,9 +64,9 @@ public class IRFileProcessor extends FileProcessor{
         int n = candidates.length;
         for (int j = 1; j < n; j++) {
             IRCandidate curr = candidates[j];
-            int key = candidates[j].numVotes;
+            int key = candidates[j].getNumVotes();
             int i = j - 1;
-            while ((i > -1) && (candidates[i].numVotes > key)) {
+            while ((i > -1) && (candidates[i].getNumVotes() > key)) {
                 candidates[i + 1] = candidates[i];
                 i--;
             }
@@ -65,9 +75,10 @@ public class IRFileProcessor extends FileProcessor{
         IRElection res = new IRElection(candidates, ballots);
         return res;
     }
-    public void countVotes(IRBallot[] ballots){
-    }
-    public IRCandidate[] rankCandidates(IRCandidate[] candidates){
-        return null;
-    }
+    //TODO: what are these methods?
+//    public void countVotes(IRBallot[] ballots){
+//    }
+//    public IRCandidate[] rankCandidates(IRCandidate[] candidates){
+//        return null;
+//    }
 }
