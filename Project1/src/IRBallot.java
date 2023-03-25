@@ -12,15 +12,9 @@ public class IRBallot extends Ballot{
     }
 
     public void redistributeVote(ArrayList<IRCandidate> eliminatedCandidiates){
-        System.out.println("candidatesQueue.poll");
-
-//        this.candidatesQueue.poll();
-        System.out.println(candidatesQueue);
         while(eliminatedCandidiates.contains(candidatesQueue.peek())){
             this.candidatesQueue.poll();
         }
-        System.out.println(candidatesQueue);
-
     }
 
     public LinkedList<IRCandidate> getCandidatesQueue(){

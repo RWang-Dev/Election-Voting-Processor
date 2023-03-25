@@ -59,13 +59,7 @@ public class Main{
 
         // run election algorithms
         currentElection.runElection();
-        LinkedList<Integer> testing = new LinkedList<>();
-        testing.add(1);
-        testing.add(2);
-        testing.add(3);
-        System.out.println(testing);
-        testing.poll();
-        System.out.println(testing);
+
 
         // print election results and create Audit file with election information
         currentElection.printElectionResults();
