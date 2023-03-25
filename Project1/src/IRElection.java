@@ -2,6 +2,7 @@
 // represents a single IR election and conducts the necessary algorithms
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * An Instant Runoff election. An IRElection object is used to determine the winner in a given IR election.
@@ -82,10 +83,12 @@ public class IRElection extends Election{
         }
         int total = this.getNumBallots();
         System.out.println(numBallots);
+        for(int i = 0; i<rankedCandidates.length; i++){
+            System.out.println(rankedCandidates[i].getName() + ": " + rankedCandidates[i].numVotes);
+        }
         while(this.rankedCandidates[0].getNumVotes() <= total/2) {
-            for(int i = 0; i<rankedCandidates.length; i++){
-                System.out.println(rankedCandidates[i].getName() + ": " + rankedCandidates[i].numVotes);
-            }
+//            System.out.println(Arrays.toString(rankedCandidates));
+
             System.out.println();
             if (this.rankedCandidates[rankedCandidates.length-1].getNumVotes() == this.rankedCandidates[0].getNumVotes()){
                 int winner = breakTie(this.rankedCandidates);
@@ -96,7 +99,17 @@ public class IRElection extends Election{
 
                 eliminateCandidate(rankedCandidates[rankedCandidates.length-(eliminatedCandidates.size() + 1)]);
             }
-            System.out.println(rankedCandidates[0].getName() + ": " + rankedCandidates[0].numVotes);
+
+
+            for(int i = 0; i<rankedCandidates.length; i++){
+                System.out.println(rankedCandidates[i].getName() + ": " + rankedCandidates[i].numVotes);
+            }
+
+        }
+        System.out.println();
+        System.out.println("FINAL VOTES: ");
+        for(int i = 0; i<rankedCandidates.length; i++){
+            System.out.println(rankedCandidates[i].getName() + ": " + rankedCandidates[i].numVotes);
         }
 
 
@@ -116,7 +129,7 @@ public class IRElection extends Election{
                 System.out.println(((IRBallot)ballots[k]).getCandidatesQueue());
                 // If so, the poll the candidate from the ballot
                 ((IRBallot) ballots[k]).redistributeVote(eliminatedCandidates);
-                System.out.println(((IRBallot)ballots[k]).getCandidatesQueue());
+//                System.out.println(((IRBallot)ballots[k]).getCandidatesQueue());
                 // Then, for each rankedCandidate, check to see if it is equal to the current ballot's second choice, which should
                 // now be in the front of the ballot queue after the eliminated candidate is gone
                 for(int i = 0; i< rankedCandidates.length; i++){
@@ -160,7 +173,7 @@ public class IRElection extends Election{
      * Prints the election results to the screen
      */
     public void printElectionResults(){
-        System.out.println("The winner is: "+ rankedCandidates[0].getName());
+        System.out.println("The winner is: "+ rankedCandidates[0].getName() + " with " + rankedCandidates[0].getNumVotes() + " votes");
     }
 
     /**
