@@ -17,14 +17,14 @@ public class IRCandidate extends Voteable implements Comparable<IRCandidate>{
     public IRCandidate(String name, int ID){
         this.name = name;
         this.ID = ID;
-        voteCountHistory = new ArrayList<Integer>();
+        this.numVotes = 0;
+        this.voteCountHistory = new ArrayList<>();
     }
 
     /**
      * Updates the vote count history by adding the current number of votes to the history
      */
     public void updateVoteCountHistory(){
-
         voteCountHistory.add(this.numVotes);
     }
 
@@ -39,12 +39,12 @@ public class IRCandidate extends Voteable implements Comparable<IRCandidate>{
         return this.voteCountHistory;
     }
 
-//    @Override
-//    public int compareTo(IRCandidate o) {
-//        return 1;
-//    }
 
-    public int compareTo(IRCandidate otherCandidate){
-        return this.numVotes - otherCandidate.numVotes;
+    public int compareTo(IRCandidate other){
+        return 1;
+    }
+
+    public String toString(){
+        return this.getName();
     }
 }

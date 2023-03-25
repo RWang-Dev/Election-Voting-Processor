@@ -36,7 +36,7 @@ public class FileHandler{
         System.out.println("Enter the name of the CSV file containing ballot information: ");
 
         // assign class variable to user's input
-        this.filename = in.nextLine();
+        this.filename = "Project1/src/" + in.nextLine();
     }
 
     /**
