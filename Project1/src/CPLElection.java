@@ -191,7 +191,7 @@ public class CPLElection extends Election {
      * helper function for produceAuditFile(), does brunt of formatting of output txt file
      * @return A String that should be pasted into the output auditfile.txt
      */
-    public String produceAuditFileString(){
+    private String produceAuditFileString(){
         String out = "";
         String lineOfDashes = "-".repeat(175) + "\n";
         String columnHeadersLine1 = String.format("%-20s | %-10s | %-11s | %-9s | %-10s | %-5s | %-10s \n",

@@ -1,6 +1,9 @@
 // inherits from abstract class Election
 // represents a single IR election and conducts the necessary algorithms
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -90,7 +93,9 @@ public class IRElection extends Election{
             for(int i = 0; i<rankedCandidates.length; i++){
                 System.out.println(rankedCandidates[i].getName() + ": " + rankedCandidates[i].numVotes);
             }
-
+            for(IRCandidate tempCand : rankedCandidates) {
+                tempCand.updateVoteCountHistory();
+            }
         }
         System.out.println();
         System.out.println("FINAL VOTE COUNT: ");
@@ -155,7 +160,76 @@ public class IRElection extends Election{
     }
 
     /**
-     * Produces an audit file in the same directory with the election information and election results
+     * Helper function for produceAuditFile(), does brunt of formatting of output txt file
+     * @return A String that should be pasted into the output auditfile.txt
      */
-    public void produceAuditFile(){}
+    private String produceAuditFileString(){
+        String out = "IR election audit file\n";
+        out += "Candidates: " + rankedCandidates[0];
+        for (int i = 1; i < rankedCandidates.length; i ++){
+            out += ", " + rankedCandidates[i];
+        }
+        out += "\n\nRound 0:\n";
+
+        for (IRCandidate candidate : rankedCandidates) {
+            out += "\t" + candidate.getName() + ": " + candidate.getVoteCountHistory().get(0) + "\n";
+        }
+
+        for (int i = 0; i < eliminatedCandidates.size(); i++) {
+            out += "Round " + (i + 1) + ": " +  eliminatedCandidates.get(i) + " eliminated\n";
+            for (IRCandidate candidate : rankedCandidates) {
+                out += "\t";
+                int voteCount = candidate.getVoteCountHistory().get(i + 1);
+                if (voteCount <= 0) {
+                    out += "-----\n";
+                }
+                else {
+                    out += candidate.getName() + ": " + candidate.getVoteCountHistory().get(i + 1) + "\n";
+                }
+            }
+        }
+
+        out += "\nWinning Candidate: " + rankedCandidates[0].getName();
+        return out;
+    }
+
+    /**
+     * Produces an audit file storing election results and history of each round of reallocated ballots
+     */
+    public void produceAuditFile(){
+        File f = new File("auditfile.csv");
+
+        try {
+            boolean fileCreated = f.createNewFile();
+            if (!fileCreated){ // if file already exists, delete it and try to create again
+                f.delete();
+                f.createNewFile();
+            }
+        }
+        catch (IOException e){ // catches possible IO errors when creating file
+            System.out.println("ERROR: IOException");
+            return;
+        }
+
+        // create FileWriter to write to File
+        FileWriter fp;
+        try {
+            fp = new FileWriter("auditfile.txt", false);
+        }
+        catch(IOException e){
+            System.out.println("ERROR: Unable to write to file");
+            return;
+        }
+
+        String out = produceAuditFileString();
+
+        try {
+            fp.write(out); // write output string to file
+            fp.close(); // close file
+        }
+        catch (IOException e) {
+            System.out.println("ERROR: writing to file failed, IOException");
+            return;
+        }
+    }
 }
