@@ -2,7 +2,7 @@
 // Handles processing of a CSV file containing information about an IR election
 
 import java.io.FileNotFoundException;
-import java.util.PriorityQueue;
+import java.util.LinkedList;
 import java.util.Scanner;
 import java.io.File;
 import java.util.Arrays;
@@ -54,14 +54,14 @@ public class IRFileProcessor extends FileProcessor{
 
             }
 
-            PriorityQueue<IRCandidate> temp = new PriorityQueue<>();
+            LinkedList<IRCandidate> temp = new LinkedList<>();
             for(int k = 0; k<numVotes; k++){
                 if(k==0){
                     currBallot[k].incrementVotes(1);
-                    temp.add(currBallot[k]);
+                    temp.addFirst(currBallot[k]);
 
                 }
-                else{temp.add(currBallot[k]);}
+                else{temp.addFirst(currBallot[k]);}
 
             }
             System.out.println(temp);

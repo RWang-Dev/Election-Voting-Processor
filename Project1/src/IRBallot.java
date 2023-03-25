@@ -2,12 +2,12 @@
 // represents a single ballot in an IR election
 
 import java.util.ArrayList;
-import java.util.PriorityQueue;
+import java.util.LinkedList;
 
 public class IRBallot extends Ballot{
-    private PriorityQueue<IRCandidate> candidatesQueue;
+    private LinkedList<IRCandidate> candidatesQueue;
 
-    public IRBallot(PriorityQueue<IRCandidate> candidatesQueue){
+    public IRBallot(LinkedList<IRCandidate> candidatesQueue){
         this.candidatesQueue = candidatesQueue;
     }
 
@@ -22,7 +22,7 @@ public class IRBallot extends Ballot{
 
     }
 
-    public PriorityQueue<IRCandidate> getCandidatesQueue(){
+    public LinkedList<IRCandidate> getCandidatesQueue(){
         return this.candidatesQueue;
     }
 
