@@ -15,10 +15,11 @@ public class IRBallot extends Ballot{
         System.out.println("candidatesQueue.poll");
 
 //        this.candidatesQueue.poll();
-
+        System.out.println(candidatesQueue);
         while(eliminatedCandidiates.contains(candidatesQueue.peek())){
             this.candidatesQueue.poll();
         }
+        System.out.println(candidatesQueue);
 
     }
 

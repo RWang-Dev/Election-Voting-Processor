@@ -125,8 +125,9 @@ public class IRElection extends Election{
 //            System.out.println(((IRBallot)ballots[k]).getCandidatesQueue().peek().getName());
             //Checks to see if the current ballot's first choice candidate is the eliminated candidate
 
-            if(((IRBallot)ballots[k]).getCandidatesQueue().peek().getName().equals(candidate.getName())){
-                System.out.println(((IRBallot)ballots[k]).getCandidatesQueue());
+            if(((IRBallot)ballots[k]).getCandidatesQueue().peek() != null &&
+                    ((IRBallot)ballots[k]).getCandidatesQueue().peek().getName().equals(candidate.getName())){
+//                System.out.println(((IRBallot)ballots[k]).getCandidatesQueue());
                 // If so, the poll the candidate from the ballot
                 ((IRBallot) ballots[k]).redistributeVote(eliminatedCandidates);
 //                System.out.println(((IRBallot)ballots[k]).getCandidatesQueue());

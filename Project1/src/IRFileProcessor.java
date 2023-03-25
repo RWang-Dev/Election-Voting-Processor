@@ -42,6 +42,9 @@ public class IRFileProcessor extends FileProcessor{
             IRCandidate[] currBallot = new IRCandidate[numCands];
             int numVotes = 0;
             for(int k = 0; k < numCands; k++){
+                if(k > rankings.length-1){
+                    break;
+                }
                 if((k == numCands-1 && numCands > rankings.length) || rankings[k].equals("")){
 
                     continue;
@@ -58,10 +61,10 @@ public class IRFileProcessor extends FileProcessor{
             for(int k = 0; k<numVotes; k++){
                 if(k==0){
                     currBallot[k].incrementVotes(1);
-                    temp.addFirst(currBallot[k]);
+                    temp.add(currBallot[k]);
 
                 }
-                else{temp.addFirst(currBallot[k]);}
+                else{temp.add(currBallot[k]);}
 
             }
             System.out.println(temp);
