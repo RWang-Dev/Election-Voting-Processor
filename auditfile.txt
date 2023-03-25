@@ -1,18 +1,25 @@
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-                     |            | First       | Remaining | Second     | Final | % of Vote  
-Parties              | Votes      | Allocation  | Votes     | Allocation | Seat  | to         
-                     |            | Of Seats    |           | Of Seats   | Total | % of Seats 
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-Democratic           | 18         | 2           | 2         | 0          | 2     | 45% / 40% 
- 
-Republican           | 18         | 2           | 2         | 0          | 2     | 45% / 40% 
- 
-New Wave             | 4          | 0           | 4         | 1          | 1     | 10% / 20% 
- 
-Reform               | 0          | 0           | 0         | 0          | 0     | 0% / 0% 
-  
-Green                | 0          | 0           | 0         | 0          | 0     | 0% / 0% 
-  
-Independent          | 0          | 0           | 0         | 0          | 0     | 0% / 0% 
-  
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+IR election audit file
+Candidates: Rosen (D), Chou (I), Royce (L), Kleinberg (R)
+
+Round 0:
+	Rosen (D): 3
+	Chou (I): 2
+	Royce (L): 1
+	Kleinberg (R): 0
+Round 1: Kleinberg (R) eliminated
+	Rosen (D): 3
+	Chou (I): 2
+	Royce (L): 1
+	-----
+Round 2: Royce (L) eliminated
+	Rosen (D): 3
+	Chou (I): 2
+	-----
+	-----
+Round 3: Chou (I) eliminated
+	Rosen (D): 4
+	-----
+	-----
+	-----
+
+Winning Candidate: Rosen (D)
