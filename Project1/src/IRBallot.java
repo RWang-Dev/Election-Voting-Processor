@@ -1,7 +1,7 @@
 // represents a single ballot in an IR election
 
 import java.util.ArrayList;
-import java.util.PriorityQueue;
+import java.util.LinkedList;
 
 
 // TODO:: actually implement
@@ -10,9 +10,9 @@ import java.util.PriorityQueue;
  * in which they were voted for.
  */
 public class IRBallot extends Ballot{
-    private PriorityQueue<IRCandidate> candidatesQueue;
+    private LinkedList<IRCandidate> candidatesQueue;
 
-    public IRBallot(PriorityQueue<IRCandidate> candidatesQueue){
+    public IRBallot(LinkedList<IRCandidate> candidatesQueue){
         this.candidatesQueue = candidatesQueue;
     }
 
@@ -23,19 +23,16 @@ public class IRBallot extends Ballot{
     public void redistributeVote(ArrayList<IRCandidate> eliminatedCandidiates){
         System.out.println("candidatesQueue.poll");
 
-        this.candidatesQueue.poll();
-
+//        this.candidatesQueue.poll();
+        System.out.println(candidatesQueue);
         while(eliminatedCandidiates.contains(candidatesQueue.peek())){
             this.candidatesQueue.poll();
         }
+        System.out.println(candidatesQueue);
 
     }
 
-    /**
-     * Gets the queue of candidates, with the highest priority candidate at the front of the queue
-     * @return  candidates queue
-     */
-    public PriorityQueue<IRCandidate> getCandidatesQueue(){
+    public LinkedList<IRCandidate> getCandidatesQueue(){
         return this.candidatesQueue;
     }
 

@@ -1,6 +1,10 @@
 // represents a single IR election and conducts the necessary algorithms
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * An Instant Runoff election. An IRElection object is used to determine the winner in a given IR election.
@@ -81,10 +85,12 @@ public class IRElection extends Election{
         }
         int total = this.getNumBallots();
         System.out.println(numBallots);
+        for(int i = 0; i<rankedCandidates.length; i++){
+            System.out.println(rankedCandidates[i].getName() + ": " + rankedCandidates[i].numVotes);
+        }
         while(this.rankedCandidates[0].getNumVotes() <= total/2) {
-            for(int i = 0; i<rankedCandidates.length; i++){
-                System.out.println(rankedCandidates[i].getName() + ": " + rankedCandidates[i].numVotes);
-            }
+//            System.out.println(Arrays.toString(rankedCandidates));
+
             System.out.println();
             if (this.rankedCandidates[rankedCandidates.length-1].getNumVotes() == this.rankedCandidates[0].getNumVotes()){
                 int winner = breakTie(this.rankedCandidates);
@@ -95,7 +101,19 @@ public class IRElection extends Election{
 
                 eliminateCandidate(rankedCandidates[rankedCandidates.length-(eliminatedCandidates.size() + 1)]);
             }
-            System.out.println(rankedCandidates[0].getName() + ": " + rankedCandidates[0].numVotes);
+
+
+            for(int i = 0; i<rankedCandidates.length; i++){
+                System.out.println(rankedCandidates[i].getName() + ": " + rankedCandidates[i].numVotes);
+            }
+            for(IRCandidate tempCand : rankedCandidates) {
+                tempCand.updateVoteCountHistory();
+            }
+        }
+        System.out.println();
+        System.out.println("FINAL VOTES: ");
+        for(int i = 0; i<rankedCandidates.length; i++){
+            System.out.println(rankedCandidates[i].getName() + ": " + rankedCandidates[i].numVotes);
         }
 
 
@@ -111,11 +129,12 @@ public class IRElection extends Election{
 //            System.out.println(((IRBallot)ballots[k]).getCandidatesQueue().peek().getName());
             //Checks to see if the current ballot's first choice candidate is the eliminated candidate
 
-            if(((IRBallot)ballots[k]).getCandidatesQueue().peek().getName().equals(candidate.getName())){
-                System.out.println(((IRBallot)ballots[k]).getCandidatesQueue());
+            if(((IRBallot)ballots[k]).getCandidatesQueue().peek() != null &&
+                    ((IRBallot)ballots[k]).getCandidatesQueue().peek().getName().equals(candidate.getName())){
+//                System.out.println(((IRBallot)ballots[k]).getCandidatesQueue());
                 // If so, the poll the candidate from the ballot
                 ((IRBallot) ballots[k]).redistributeVote(eliminatedCandidates);
-                System.out.println(((IRBallot)ballots[k]).getCandidatesQueue());
+//                System.out.println(((IRBallot)ballots[k]).getCandidatesQueue());
                 // Then, for each rankedCandidate, check to see if it is equal to the current ballot's second choice, which should
                 // now be in the front of the ballot queue after the eliminated candidate is gone
                 for(int i = 0; i< rankedCandidates.length; i++){
@@ -159,11 +178,80 @@ public class IRElection extends Election{
      * Prints the election results to the screen
      */
     public void printElectionResults(){
-        System.out.println("The winner is: "+ rankedCandidates[0].getName());
+        System.out.println("The winner is: "+ rankedCandidates[0].getName() + " with " + rankedCandidates[0].getNumVotes() + " votes");
     }
 
     /**
-     * Produces an audit file in the same directory with the election information and election results
+     * Helper function for produceAuditFile(), does brunt of formatting of output txt file
+     * @return A String that should be pasted into the output auditfile.txt
      */
-    public void produceAuditFile(){}
+    private String produceAuditFileString(){
+        String out = "IR election audit file\n";
+        out += "Candidates: " + rankedCandidates[0];
+        for (int i = 1; i < rankedCandidates.length; i ++){
+            out += ", " + rankedCandidates[i];
+        }
+        out += "\n\nRound 0:\n";
+
+        for (IRCandidate candidate : rankedCandidates) {
+            out += "\t" + candidate.getName() + ": " + candidate.getVoteCountHistory().get(0) + "\n";
+        }
+
+        for (int i = 0; i < eliminatedCandidates.size(); i++) {
+            out += "Round " + (i + 1) + ": " +  eliminatedCandidates.get(i) + " eliminated\n";
+            for (IRCandidate candidate : rankedCandidates) {
+                out += "\t";
+                int voteCount = candidate.getVoteCountHistory().get(i + 1);
+                if (voteCount <= 0) {
+                    out += "-----\n";
+                }
+                else {
+                    out += candidate.getName() + ": " + candidate.getVoteCountHistory().get(i + 1) + "\n";
+                }
+            }
+        }
+
+        out += "\nWinning Candidate: " + rankedCandidates[0].getName();
+        return out;
+    }
+
+    /**
+     * Produces an audit file storing election results and history of each round of reallocated ballots
+     */
+    public void produceAuditFile(){
+        File f = new File("auditfile.csv");
+
+        try {
+            boolean fileCreated = f.createNewFile();
+            if (!fileCreated){ // if file already exists, delete it and try to create again
+                f.delete();
+                f.createNewFile();
+            }
+        }
+        catch (IOException e){ // catches possible IO errors when creating file
+            System.out.println("ERROR: IOException");
+            return;
+        }
+
+        // create FileWriter to write to File
+        FileWriter fp;
+        try {
+            fp = new FileWriter("auditfile.txt", false);
+        }
+        catch(IOException e){
+            System.out.println("ERROR: Unable to write to file");
+            return;
+        }
+
+        String out = produceAuditFileString();
+
+        try {
+            fp.write(out); // write output string to file
+            fp.close(); // close file
+        }
+        catch (IOException e) {
+            System.out.println("ERROR: writing to file failed, IOException");
+            return;
+        }
+    }
 }
