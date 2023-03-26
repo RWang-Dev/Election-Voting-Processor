@@ -3,8 +3,6 @@
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-
-// TODO:: actually implement
 /**
  * A cast ballot in an Instant Runoff election. Contains data about which candidates were voted for and the order
  * in which they were voted for.

@@ -104,7 +104,6 @@ public class IRElection extends Election{
                 eliminateCandidate();
             }
 
-
             System.out.println("Vote count after eliminating last place candidate: ");
             printCandidateInfo();
             updateVoteCountHistories();
@@ -114,7 +113,6 @@ public class IRElection extends Election{
         printCandidateInfo();
     }
 
-    //TODO: Clean up this function. It's currently a mess
     /**
      * Redistributes an eliminated candidate's votes to the remaining candidates
      * @param candidate the candidate to be eliminated
@@ -139,7 +137,6 @@ public class IRElection extends Election{
                         break;
                     }
                 }
-
             }
         }
     }
@@ -195,7 +192,7 @@ public class IRElection extends Election{
      * Prints the election results to the screen
      */
     public void printElectionResults(){
-        System.out.println();
+        System.out.println("____________________________________________________");
         System.out.println("THE WINNER IS: "+ rankedCandidates[0].getName() + " with " + rankedCandidates[0].getNumVotes() + " votes");
     }
 

@@ -97,16 +97,4 @@ public abstract class Election{
 
         return minIdx; // return index of winner/loser
     }
-
-    // TODO:: Do we actually use this function?
-    /**
-     * prompt user to input date into the console (can be used when creating audit file)
-     * @return A String representing the date of the election in (mm/dd/yyyy) format
-     */
-    public String promptUserForDate(){
-        Scanner in = new Scanner(System.in);
-        // prompt user for input
-        System.out.println("Enter the date of the election in the following format (mm/dd/yyyy): ");
-        return in.nextLine();
-    }
 }

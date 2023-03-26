@@ -81,18 +81,18 @@ public class ElectionTest {
         assertEquals(0, election.breakTie(candidates_1));
     }
 
-    @Test
-    void PromptUserForDataTest(){
-
-        // Set System.in to custom stream
-        InputStream sysInBackup = System.in; // backup System.in to restore it later
-        ByteArrayInputStream in = new ByteArrayInputStream("03/25/2023".getBytes());
-        System.setIn(in);
-
-        assertEquals("03/25/2023", election.promptUserForDate());
-
-
-        // reset System.in to its original
-        System.setIn(sysInBackup);
-    }
+//    @Test
+//    void PromptUserForDataTest(){
+//
+//        // Set System.in to custom stream
+//        InputStream sysInBackup = System.in; // backup System.in to restore it later
+//        ByteArrayInputStream in = new ByteArrayInputStream("03/25/2023".getBytes());
+//        System.setIn(in);
+//
+//        assertEquals("03/25/2023", election.promptUserForDate());
+//
+//
+//        // reset System.in to its original
+//        System.setIn(sysInBackup);
+//    }
 }

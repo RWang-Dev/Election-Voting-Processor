@@ -37,7 +37,7 @@ public class Main{
             scnr = new Scanner(fp);
         }
         catch (FileNotFoundException ex) {
-            // TODO:: Modify behavior here?
+
             System.out.println("ERROR: File not found");
             return;
         }
@@ -52,8 +52,8 @@ public class Main{
         else if (firstLine.equals("CPL")){
             fileP = new CPLFileProcessor();
         }
-        else { // TODO:: can change how we handle this error
-            System.out.println("ERROR: File incorectly formatted");
+        else {
+            System.out.println("ERROR: File incorrectly formatted");
             return;
         }
         scnr.close(); // close Scanner, rest of file will be read later

@@ -10,7 +10,7 @@ import java.io.IOException;
  * A Closed Party list election. A CPLElection object is used to determine the winner in a given CPL election.
  */
 public class CPLElection extends Election {
-    private CPLParty[] parties; // Just realized this is just the same as voteables - TODO:: remove comment
+    private CPLParty[] parties;
     private int numSeats;
     private String[] results;
 

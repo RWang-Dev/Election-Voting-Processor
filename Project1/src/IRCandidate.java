@@ -1,7 +1,6 @@
 // represents a candidate object in an IR election
 
 import java.util.ArrayList;
-// TODO:: implement
 
 /**
  * A candidate in an Instant Runoff election. IRCandidates are used in IRElections to determine the winner.
@@ -28,7 +27,7 @@ public class IRCandidate extends Voteable implements Comparable<IRCandidate>{
         voteCountHistory.add(this.numVotes);
     }
 
-    //TODO: method not used
+
     /**
      * Gets the vote count history
      * @return an ArrayList representing the vote count history and recording the number of votes each
