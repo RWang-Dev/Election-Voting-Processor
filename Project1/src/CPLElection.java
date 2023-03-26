@@ -5,6 +5,9 @@ import java.lang.Math;
 import java.io.File;
 import java.io.FileWriter; // TODO:: may need to add to UML class diagram?
 import java.io.IOException;
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * A Closed Party list election. A CPLElection object is used to determine the winner in a given CPL election.
@@ -13,6 +16,7 @@ public class CPLElection extends Election {
     private CPLParty[] parties;
     private int numSeats;
     private String[] results;
+    private int totalNumCandidates;
 
     /**
      * Creates a CPLElection object and assigns values to instance variables
@@ -29,6 +33,10 @@ public class CPLElection extends Election {
         this.numBallots = numballots;
         this.numSeats = numSeats;
         this.results = new String[numSeats];
+
+        for(var party: parties){
+            totalNumCandidates += party.getNumPartyCandidates();
+        }
     }
 
     /**
@@ -74,11 +82,13 @@ public class CPLElection extends Election {
                 seats = parties[i].getNumPartyCandidates();
                 parties[i].setNumVotesAfterFirstAllocation(-1);
             }
+            else{
+                parties[i].setNumVotesAfterFirstAllocation(parties[i].getNumVotes() - quota*seats);
+            }
 
             seatsAllocated += seats;
             parties[i].setNumSeatsAllotedFirst(seats);
             // subtract votes used towards seats already alloted to this party
-            parties[i].setNumVotesAfterFirstAllocation(parties[i].getNumVotes() - quota*seats);
 
         }
         return seatsAllocated;
@@ -90,31 +100,36 @@ public class CPLElection extends Election {
      * @param seatsAllocated An int representing the number of seats priorly allocated
      */
     public void secondSeatAlloc(int quota, int seatsAllocated){
-        while (seatsAllocated < numSeats){
+        while (seatsAllocated < numSeats && seatsAllocated < totalNumCandidates){
             int max = -1;
             CPLParty maxParty = null;
-            CPLParty[] tieForMax = new CPLParty[numVoteables]; // tracks tied parties for maxvotes, in case of tie
+            ArrayList<CPLParty> tieForMax = new ArrayList<>(); // tracks tied parties for maxvotes, in case of tie
             boolean isTie = false;
             for (CPLParty party : parties){ // loop through all parties to find the one with the most remaining votes
                 if (party.getNumVotesAfterFirstAllocation() > max){ // new max found
                     max = party.getNumVotesAfterFirstAllocation();
                     maxParty = party;
-                    clearArray(tieForMax); // clear tieformax, since we have a new max
+                    tieForMax.clear(); // clear tieformax, since we have a new max
                     isTie = false;
-                    tieForMax[0] = maxParty;
+                    tieForMax.add(maxParty);
                 }
                 else if (party.getNumVotesAfterFirstAllocation() == max){ // tie for max
                     isTie = true;
-                    int i = 1;
-                    while (i < numVoteables && tieForMax[i] != null){ // find first open slot in tieForMax
-                        i++;
-                    }
-                    tieForMax[i] = party; // add party to tieForMax array
+                    tieForMax.add(maxParty);
                 }
             }
 
+            CPLParty[] tieForMaxArray = new CPLParty[tieForMax.size()];
+            for(int i = 0; i < tieForMax.size(); i++){
+                tieForMaxArray[i] = tieForMax.get(i);
+            }
+
             if (isTie){ // if there is a tie for the max, then must break tie to determine winner of seat
-                maxParty = tieForMax[breakTie(tieForMax)];
+                maxParty = tieForMax.get(breakTie( tieForMaxArray));
+            }
+
+            if(maxParty == null){
+                break;
             }
 
             seatsAllocated ++;
@@ -158,7 +173,13 @@ public class CPLElection extends Election {
         int seatsAllocated = 0;
 
         // first allocation of seats that can be assigned solely by meeting quota
-        seatsAllocated = firstSeatAlloc(quota, seatsAllocated);
+        if(quota > 0){
+            seatsAllocated = firstSeatAlloc(quota, seatsAllocated);
+        }
+        else{
+            seatsAllocated = firstSeatAlloc(Integer.MAX_VALUE, seatsAllocated);
+        }
+
 
         // second allocation of seats
         secondSeatAlloc(quota, seatsAllocated);
@@ -188,7 +209,9 @@ public class CPLElection extends Election {
     public void printElectionResults(){
         System.out.println("The winners of seats are: ");
         for (String cand : results){ // loop through each candidate in results[] and print it
-            System.out.println(cand);
+            if(cand != null){
+                System.out.println(cand);
+            }
         }
     }
 
