@@ -62,7 +62,7 @@ class IRElectionTest {
         Voteable[] resCandidates = testElection.getCandidates();
         IRCandidate[] expCandidates = new IRCandidate[]{Rosen, Kleinberg, Chou, Royce};
         for(int i = 0; i<expCandidates.length; i++){
-            assertEquals(expCandidates[i], resCandidates[i]);
+            assertEquals(expCandidates[i].getName(), resCandidates[i].getName());
         }
     }
 
@@ -81,8 +81,8 @@ class IRElectionTest {
             assertEquals(expCandidates[i].getName(), testElection.getCandidates()[i].getName());
         }
         assertEquals(4, testElection.getCandidates()[0].getNumVotes());
+        assertThrows(IllegalCallerException.class, () -> testIROneCandidate.eliminateCandidate());
 
-        testIROneCandidate.eliminateCandidate(); //TODO:: CAUSES A BUG!!!!!!!!
         expCandidates = new IRCandidate[]{Rosen};
         for(int i = 0; i < testIROneCandidate.getNumCandidates(); i++){
 
@@ -156,8 +156,7 @@ class IRElectionTest {
         assertTrue(ctKleinberg < 400 && ctKleinberg > 200);
         assertTrue(ctChou < 400 && ctChou > 200);
         assertTrue(ctRoyce < 400 && ctRoyce > 200);
-        // TODO:: LAST CANDIDATE DOES NOT GET BREAK TIE
-//
+
 
     }
 

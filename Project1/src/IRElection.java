@@ -61,7 +61,7 @@ public class IRElection extends Election{
     public void eliminateCandidate(){
         if(numValidCandidates <= 1){
             throw new IllegalCallerException("Can't eliminate candidate" +
-                    "if one or less candidates.");
+                    " if one or less candidates.");
         }
         IRCandidate cand = rankedCandidates[numValidCandidates - 1];
         this.eliminatedCandidates.add(cand);
