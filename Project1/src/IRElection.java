@@ -13,6 +13,7 @@ import java.util.Arrays;
 public class IRElection extends Election{
     private IRCandidate[] rankedCandidates;
     private ArrayList<IRCandidate> eliminatedCandidates;
+    private int numValidCandidates;
 
     /**
      * Creates an instance of IRElection with a given list of rankedCandidates and list of ballots
@@ -21,6 +22,8 @@ public class IRElection extends Election{
      */
     public IRElection(IRCandidate[] rankedCandidates, IRBallot[] ballots){
         this.rankedCandidates = rankedCandidates;
+        this.numVoteables = rankedCandidates.length;
+        this.numValidCandidates = rankedCandidates.length;
         this.numBallots = ballots.length;
         this.ballots = ballots;
         this.eliminatedCandidates = new ArrayList<>();
@@ -50,12 +53,15 @@ public class IRElection extends Election{
         return this.rankedCandidates;
     }
 
+
+
     /**
      * Eliminates a candidate after no winner can be determined. The losing candidate is removed from the list
      * of candidates and their votes are redistributed.
      * @param cand the candidate to be eliminated
      */
-    public void eliminateCandidate(IRCandidate cand){
+    public void eliminateCandidate(){
+        IRCandidate cand = rankedCandidates[numValidCandidates - 1];
         this.eliminatedCandidates.add(cand);
 
         for(int i = 0; i<this.rankedCandidates.length; i++){
@@ -64,8 +70,22 @@ public class IRElection extends Election{
             }
         }
 
+        numValidCandidates -= 1;
         this.redistributeVotes(cand);
         this.reRankCandidates();
+    }
+
+    private void printCandidateInfo(){
+        for(int i = 0; i<rankedCandidates.length; i++){
+            System.out.println(rankedCandidates[i].getName() + ": " + rankedCandidates[i].numVotes);
+        }
+        System.out.println();
+    }
+
+    private void updateVoteCountHistories(){
+        for(IRCandidate tempCand : rankedCandidates) {
+            tempCand.updateVoteCountHistory();
+        }
     }
 
     /**
@@ -74,37 +94,29 @@ public class IRElection extends Election{
      */
     public void runElection(){
         // Initial input for BallotHistory - for audit file
-        for(IRCandidate tempCand : rankedCandidates) {
-            tempCand.updateVoteCountHistory();
-        }
+        updateVoteCountHistories();
+        reRankCandidates();
         int total = this.getNumBallots();
 
         while(this.rankedCandidates[0].getNumVotes() <= total/2) {
-            if (this.rankedCandidates[rankedCandidates.length-1].getNumVotes() == this.rankedCandidates[0].getNumVotes()){
-                int winner = breakTie(this.rankedCandidates);
-                rankedCandidates[0] = rankedCandidates[winner];
+            if(numValidCandidates <= 1){
                 break;
             }
             else{
-                eliminateCandidate(rankedCandidates[rankedCandidates.length-(eliminatedCandidates.size() + 1)]);
+                eliminateCandidate();
             }
-            System.out.println();
+
+
             System.out.println("Vote count after eliminating last place candidate: ");
-            for(int i = 0; i<rankedCandidates.length; i++){
-                System.out.println(rankedCandidates[i].getName() + ": " + rankedCandidates[i].numVotes);
-            }
-            for(IRCandidate tempCand : rankedCandidates) {
-                tempCand.updateVoteCountHistory();
-            }
-        }
-        System.out.println();
-        System.out.println("FINAL VOTE COUNT: ");
-        for(int i = 0; i<rankedCandidates.length; i++){
-            System.out.println(rankedCandidates[i].getName() + ": " + rankedCandidates[i].numVotes);
+            printCandidateInfo();
+            updateVoteCountHistories();
         }
 
+        System.out.println("FINAL VOTE COUNT: ");
+        printCandidateInfo();
     }
 
+    //TODO: Clean up this function. It's currently a mess
     /**
      * Redistributes an eliminated candidate's votes to the remaining candidates
      * @param candidate the candidate to be eliminated
@@ -134,6 +146,8 @@ public class IRElection extends Election{
         }
     }
 
+    // TODO: Get this function working right
+    // TODO: Make this function look nice
     /**
      * Rerank the order of the candidates after eliminating one and redistributing their votes
      */
@@ -149,6 +163,35 @@ public class IRElection extends Election{
             }
             rankedCandidates[i + 1] = curr;
         }
+        rankedCandidates = breakTies(rankedCandidates);
+    }
+
+    private IRCandidate[] breakTies(IRCandidate[] candidates){
+        //Checks for ties at the lower end, randomly selects bottom one
+        int num_ties = 0;
+        int lowestCandidateNum = candidates[numValidCandidates - 1].getNumVotes();
+        for(int i = numValidCandidates - 1; i >= 0; i--){
+            if(candidates[i].getNumVotes() == lowestCandidateNum){
+                num_ties++;
+            }
+        }
+        if(num_ties > 1){
+            candidates = rerank_n(candidates, num_ties);
+        }
+        return candidates;
+    }
+
+    IRCandidate[] rerank_n(IRCandidate[] cands, int num_ties){
+        IRCandidate[] temp_candidates = new IRCandidate[num_ties];
+        for (int i = 0; i < num_ties; i++){
+            temp_candidates[i] = new IRCandidate("name" + i, i);
+        }
+        int random_pos = breakTie(temp_candidates);
+
+        IRCandidate temp = cands[numValidCandidates - 1];
+        cands[numValidCandidates - 1] = cands[numValidCandidates - 1 - random_pos];
+        cands[numValidCandidates - 1 - random_pos] = temp;
+        return cands;
     }
 
     /**

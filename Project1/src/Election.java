@@ -39,6 +39,8 @@ public abstract class Election{
         return numBallots;
     }
 
+    public Ballot[] getBallots() { return this.ballots; }
+
     /**
      * Runs the election algorithm, determining the winner(s)
      */
@@ -60,6 +62,7 @@ public abstract class Election{
      * @return An int representing the index of the input array of the Voteable that is designated as the winner/loser in a tied scenario
      */
     public int breakTie(Voteable[] voteable){
+
         double rand = 0.0;
         Random r = new Random();
 
@@ -84,7 +87,7 @@ public abstract class Election{
         int minIdx = -1;
         for (int i = 0; i < voteable.length; i++){
             double dist = Math.abs(rand - rand_voteables[i]);
-            if (dist < minDist){
+            if (dist < minDist || minIdx == -1){
                 minDist = dist;
                 minIdx = i;
             }
