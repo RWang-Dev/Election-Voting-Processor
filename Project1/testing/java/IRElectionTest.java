@@ -6,6 +6,7 @@ class IRElectionTest {
 
     @Test
     void getNumCandidates() {
+
     }
 
     @Test
