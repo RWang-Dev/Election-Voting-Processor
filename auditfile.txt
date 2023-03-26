@@ -1,25 +1,25 @@
 IR election audit file
-Candidates: Rosen (D), Kleinberg (R), Chou (I), Royce (L)
+Candidates: Royce (L), Rosen (D), Chou (I), Kleinberg (R)
 
 Round 0:
-	Rosen (D): 2
-	Kleinberg (R): 2
-	Chou (I): 2
 	Royce (L): 2
-Round 1: Royce (L) eliminated
 	Rosen (D): 2
+	Chou (I): 2
 	Kleinberg (R): 2
+Round 1: Kleinberg (R) eliminated
+	Royce (L): 2
+	Rosen (D): 2
 	Chou (I): 2
 	-----
 Round 2: Chou (I) eliminated
+	Royce (L): 2
 	Rosen (D): 2
-	Kleinberg (R): 2
 	-----
 	-----
-Round 3: Kleinberg (R) eliminated
-	Rosen (D): 2
+Round 3: Rosen (D) eliminated
+	Royce (L): 2
 	-----
 	-----
 	-----
 
-Winning Candidate: Rosen (D)
+Winning Candidate: Royce (L)

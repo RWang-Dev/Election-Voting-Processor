@@ -64,6 +64,19 @@ class IRElectionTest {
         for(int i = 0; i<expCandidates.length; i++){
             assertEquals(expCandidates[i].getName(), resCandidates[i].getName());
         }
+        resCandidates = testIROneCandidate.getCandidates();
+        expCandidates = new IRCandidate[]{Rosen};
+        for(int i = 0; i<expCandidates.length; i++){
+            assertEquals(expCandidates[i].getName(), resCandidates[i].getName());
+        }
+        resCandidates = testIRTiedCandidates.getCandidates();
+        expCandidates = new IRCandidate[]{Rosen, Royce};
+        for(int i = 0; i<expCandidates.length; i++){
+            assertEquals(expCandidates[i].getName(), resCandidates[i].getName());
+        }
+
+
+
     }
 
     @Test
