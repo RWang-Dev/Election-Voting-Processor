@@ -94,7 +94,6 @@ public class IRElection extends Election{
     public void runElection(){
         // Initial input for BallotHistory - for audit file
         updateVoteCountHistories();
-        reRankCandidates();
         int total = this.getNumBallots();
 
         while(this.rankedCandidates[0].getNumVotes() <= total/2) {
@@ -145,8 +144,7 @@ public class IRElection extends Election{
         }
     }
 
-    // TODO: Get this function working right
-    // TODO: Make this function look nice
+
     /**
      * Rerank the order of the candidates after eliminating one and redistributing their votes
      */
@@ -156,7 +154,7 @@ public class IRElection extends Election{
             IRCandidate curr = rankedCandidates[j];
             int key = rankedCandidates[j].getNumVotes();
             int i = j - 1;
-            while ((i > -1) && (rankedCandidates[i].getNumVotes() > key)) {
+            while ((i > -1) && (rankedCandidates[i].getNumVotes() < key)) {
                 rankedCandidates[i + 1] = rankedCandidates[i];
                 i--;
             }

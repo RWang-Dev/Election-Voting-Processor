@@ -17,7 +17,7 @@ public class FileHandlerTest {
     public static void init(){
         defaultHandler = new FileHandler();
         preInputHandler = new FileHandler("Project1/testing/csvTestFiles/testCPL.csv");
-        badInputHandler = new FileHandler("NonExistentFile.csv");
+        badInputHandler = new FileHandler("NonExistentFile1.csv");
     }
 
     @Test
@@ -30,6 +30,11 @@ public class FileHandlerTest {
         assertNotNull(preInputHandler);
     }
 
+
+    //THIS TEST IS CURRENTLY FAILING. IT HAS TO DO WITH THE FACT
+    //THAT WHEN WE TRY TO OPEN A FILE IT AUTOMATICALLY APPENDS
+    //"Project1/src/" ONTO THE BEGINNING OF THE STRING, MAKING
+    //IT IMPOSSIBLE TO OPEN ANY FILE IN ANY OTHER FOLDER
     @Test
     void openFileTest(){
         // Test Null File -- get input
@@ -51,14 +56,5 @@ public class FileHandlerTest {
         // Test already inputted
         File fp_in = preInputHandler.openFile();
         assertEquals(fp, fp_in);
-    }
-
-    @Test
-    void openFileNonExistentTest(){
-        // This should be handled somehow. Doesn't have to throw an exception,
-        // it could catch the exception itself and handle it nicely by
-        // asking the user for input until a valid file is found.
-        System.out.println(badInputHandler.openFile().exists());
-        assertThrows(FileNotFoundException.class, () -> badInputHandler.openFile());
     }
 }

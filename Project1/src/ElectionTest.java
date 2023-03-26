@@ -1,8 +1,6 @@
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.InputStream;
 import java.util.Arrays;
 
@@ -56,7 +54,7 @@ public class ElectionTest {
     }
 
     @Test
-    void voidBreakTieTestWithIRCandidates(){
+    void BreakTieTestWithIRCandidates(){
         IRCandidate[] candidates = new IRCandidate[1000];
         for (int i = 0; i < 1000; i++){
             candidates[i] = new IRCandidate("party_" + i, i);

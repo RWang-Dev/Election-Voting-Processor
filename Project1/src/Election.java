@@ -61,6 +61,9 @@ public abstract class Election{
      * @return An int representing the index of the input array of the Voteable that is designated as the winner/loser in a tied scenario
      */
     public int breakTie(Voteable[] voteable){
+        if(voteable.length < 1){
+            return -1;
+        }
 
         double rand = 0.0;
         Random r = new Random();

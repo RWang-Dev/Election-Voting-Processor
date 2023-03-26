@@ -40,8 +40,8 @@ class IRBallotTest {
         ballot.redistributeVote(eliminatedCandidatesQueue);
         assertEquals(3, ballot.getCandidatesQueue().size());
         assertTrue(alice_cand.equals(cands.get(0)));
-        assertTrue(bob_cand.equals(cands.get(0)));
-        assertTrue(charles_cand.equals(cands.get(0)));
+        assertTrue(bob_cand.equals(cands.get(1)));
+        assertTrue(charles_cand.equals(cands.get(2)));
 
         // Eliminate the first candidate in the queue
         // Second candidate also gets eliminated because

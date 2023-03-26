@@ -1,1 +1,0 @@
-This is just here so the resources directory gets pushed to github.
