@@ -57,7 +57,6 @@ public class IRElection extends Election{
     /**
      * Eliminates a candidate after no winner can be determined. The losing candidate is removed from the list
      * of candidates and their votes are redistributed.
-     * @param cand the candidate to be eliminated
      */
     public void eliminateCandidate(){
         IRCandidate cand = rankedCandidates[numValidCandidates - 1];
