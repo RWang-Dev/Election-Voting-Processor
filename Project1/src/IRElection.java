@@ -12,6 +12,7 @@ import java.util.Arrays;
 public class IRElection extends Election{
     private IRCandidate[] rankedCandidates;
     private ArrayList<IRCandidate> eliminatedCandidates;
+    private int numValidCandidates;
 
     /**
      * Creates an instance of IRElection with a given list of rankedCandidates and list of ballots
@@ -20,6 +21,8 @@ public class IRElection extends Election{
      */
     public IRElection(IRCandidate[] rankedCandidates, IRBallot[] ballots){
         this.rankedCandidates = rankedCandidates;
+        this.numVoteables = rankedCandidates.length;
+        this.numValidCandidates = rankedCandidates.length;
         this.numBallots = ballots.length;
         this.ballots = ballots;
         this.eliminatedCandidates = new ArrayList<>();
@@ -49,12 +52,15 @@ public class IRElection extends Election{
         return this.rankedCandidates;
     }
 
+
+
     /**
      * Eliminates a candidate after no winner can be determined. The losing candidate is removed from the list
      * of candidates and their votes are redistributed.
      * @param cand the candidate to be eliminated
      */
-    public void eliminateCandidate(IRCandidate cand){
+    public void eliminateCandidate(){
+        IRCandidate cand = rankedCandidates[numValidCandidates - 1];
         this.eliminatedCandidates.add(cand);
 
         for(int i = 0; i<this.rankedCandidates.length; i++){
@@ -62,16 +68,23 @@ public class IRElection extends Election{
                 this.rankedCandidates[i].numVotes = -1;
             }
         }
-//        for(int j = 0; j<this.voteables.length; j++){
-//            if(this.voteables[j].getName().equals(cand.getName())) {
-//                this.voteables[j] = null;
-//                this.numVoteables -= 1;
-//            }
-//        }
 
-        // RECOUNT THE BALLOTS
+        numValidCandidates -= 1;
         this.redistributeVotes(cand);
         this.reRankCandidates();
+    }
+
+    private void printCandidateInfo(){
+        for(int i = 0; i<rankedCandidates.length; i++){
+            System.out.println(rankedCandidates[i].getName() + ": " + rankedCandidates[i].numVotes);
+        }
+        System.out.println();
+    }
+
+    private void updateVoteCountHistories(){
+        for(IRCandidate tempCand : rankedCandidates) {
+            tempCand.updateVoteCountHistory();
+        }
     }
 
     /**
@@ -80,73 +93,49 @@ public class IRElection extends Election{
      */
     public void runElection(){
         // Initial input for BallotHistory - for audit file
-        for(IRCandidate tempCand : rankedCandidates) {
-            tempCand.updateVoteCountHistory();
-        }
+        updateVoteCountHistories();
+        reRankCandidates();
         int total = this.getNumBallots();
-        System.out.println(numBallots);
-        for(int i = 0; i<rankedCandidates.length; i++){
-            System.out.println(rankedCandidates[i].getName() + ": " + rankedCandidates[i].numVotes);
-        }
-        while(this.rankedCandidates[0].getNumVotes() <= total/2) {
-//            System.out.println(Arrays.toString(rankedCandidates));
 
-            System.out.println();
-            if (this.rankedCandidates[rankedCandidates.length-1].getNumVotes() == this.rankedCandidates[0].getNumVotes()){
-                int winner = breakTie(this.rankedCandidates);
-                rankedCandidates[0] = rankedCandidates[winner];
+        while(this.rankedCandidates[0].getNumVotes() <= total/2) {
+            if(numValidCandidates <= 1){
                 break;
             }
             else{
-
-                eliminateCandidate(rankedCandidates[rankedCandidates.length-(eliminatedCandidates.size() + 1)]);
+                eliminateCandidate();
             }
 
 
-            for(int i = 0; i<rankedCandidates.length; i++){
-                System.out.println(rankedCandidates[i].getName() + ": " + rankedCandidates[i].numVotes);
-            }
-            for(IRCandidate tempCand : rankedCandidates) {
-                tempCand.updateVoteCountHistory();
-            }
-        }
-        System.out.println();
-        System.out.println("FINAL VOTES: ");
-        for(int i = 0; i<rankedCandidates.length; i++){
-            System.out.println(rankedCandidates[i].getName() + ": " + rankedCandidates[i].numVotes);
+            System.out.println("Vote count after eliminating last place candidate: ");
+            printCandidateInfo();
+            updateVoteCountHistories();
         }
 
-
+        System.out.println("FINAL VOTE COUNT: ");
+        printCandidateInfo();
     }
 
+    //TODO: Clean up this function. It's currently a mess
     /**
      * Redistributes an eliminated candidate's votes to the remaining candidates
      * @param candidate the candidate to be eliminated
      */
     private void redistributeVotes(IRCandidate candidate){
         for(int k = 0; k < this.ballots.length; k++){
-//            System.out.println(((IRBallot)ballots[k]).getCandidatesQueue().peek() == null);
-//            System.out.println(((IRBallot)ballots[k]).getCandidatesQueue().peek().getName());
             //Checks to see if the current ballot's first choice candidate is the eliminated candidate
-
             if(((IRBallot)ballots[k]).getCandidatesQueue().peek() != null &&
                     ((IRBallot)ballots[k]).getCandidatesQueue().peek().getName().equals(candidate.getName())){
-//                System.out.println(((IRBallot)ballots[k]).getCandidatesQueue());
                 // If so, the poll the candidate from the ballot
                 ((IRBallot) ballots[k]).redistributeVote(eliminatedCandidates);
-//                System.out.println(((IRBallot)ballots[k]).getCandidatesQueue());
                 // Then, for each rankedCandidate, check to see if it is equal to the current ballot's second choice, which should
                 // now be in the front of the ballot queue after the eliminated candidate is gone
                 for(int i = 0; i< rankedCandidates.length; i++){
-
                     // -1 votes is already an eliminated candidate
                     if(rankedCandidates[i].numVotes == -1){
                         continue;
                     }
-
                     if(((IRBallot)ballots[k]).getCandidatesQueue().peek() != null &&
                             rankedCandidates[i].getName().equals(((IRBallot)ballots[k]).getCandidatesQueue().peek().getName())){
-
                         rankedCandidates[i].incrementVotes(1);
                         break;
                     }
@@ -156,6 +145,8 @@ public class IRElection extends Election{
         }
     }
 
+    // TODO: Get this function working right
+    // TODO: Make this function look nice
     /**
      * Rerank the order of the candidates after eliminating one and redistributing their votes
      */
@@ -171,14 +162,43 @@ public class IRElection extends Election{
             }
             rankedCandidates[i + 1] = curr;
         }
+        rankedCandidates = breakTies(rankedCandidates);
     }
 
+    private IRCandidate[] breakTies(IRCandidate[] candidates){
+        //Checks for ties at the lower end, randomly selects bottom one
+        int num_ties = 0;
+        int lowestCandidateNum = candidates[numValidCandidates - 1].getNumVotes();
+        for(int i = numValidCandidates - 1; i >= 0; i--){
+            if(candidates[i].getNumVotes() == lowestCandidateNum){
+                num_ties++;
+            }
+        }
+        if(num_ties > 1){
+            candidates = rerank_n(candidates, num_ties);
+        }
+        return candidates;
+    }
+
+    IRCandidate[] rerank_n(IRCandidate[] cands, int num_ties){
+        IRCandidate[] temp_candidates = new IRCandidate[num_ties];
+        for (int i = 0; i < num_ties; i++){
+            temp_candidates[i] = new IRCandidate("name" + i, i);
+        }
+        int random_pos = breakTie(temp_candidates);
+
+        IRCandidate temp = cands[numValidCandidates - 1];
+        cands[numValidCandidates - 1] = cands[numValidCandidates - 1 - random_pos];
+        cands[numValidCandidates - 1 - random_pos] = temp;
+        return cands;
+    }
 
     /**
      * Prints the election results to the screen
      */
     public void printElectionResults(){
-        System.out.println("The winner is: "+ rankedCandidates[0].getName() + " with " + rankedCandidates[0].getNumVotes() + " votes");
+        System.out.println();
+        System.out.println("THE WINNER IS: "+ rankedCandidates[0].getName() + " with " + rankedCandidates[0].getNumVotes() + " votes");
     }
 
     /**

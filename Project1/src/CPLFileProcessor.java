@@ -27,14 +27,15 @@ public class CPLFileProcessor extends FileProcessor{
             s = new Scanner(inputFile);
         }
         catch (FileNotFoundException ex) {
-            // TODO:: Modify behavior here?
-            System.out.println("ERROR: File not found");
-            return null;
+            throw new IllegalArgumentException("Error: Inputted file not found");
         }
         s.nextLine(); // skip over line specifying election type
 
         // retrieve information from file, knowing it is formatted as specified in the SRS
         int numParties = Integer.parseInt(s.nextLine());
+        if(numParties <= 0){
+            throw new IllegalArgumentException("Error: There must be at least 1 party");
+        }
         String[] partiesStrings = s.nextLine().split(",");
 
         // create array of CPLParty objects for each party in the CPL election
@@ -45,6 +46,9 @@ public class CPLFileProcessor extends FileProcessor{
         }
 
         int numSeats = Integer.parseInt(s.nextLine());
+        if(numSeats <= 0){
+            throw new IllegalArgumentException("Error: There must be at least 1 seat");
+        }
         int numBallots = Integer.parseInt(s.nextLine());
 
         // create array of CPLBallot objects, representing all ballots cast in the CPL election

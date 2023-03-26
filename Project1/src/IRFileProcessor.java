@@ -27,14 +27,16 @@ public class IRFileProcessor extends FileProcessor{
             s = new Scanner(inputFile);
         }
         catch (FileNotFoundException ex) {
-            System.out.println("ERROR: File not found");
-            return null;
+            throw new IllegalArgumentException("ERROR: File not found");
         }
         s.nextLine(); // skip over line specifying election type
 
         // retrieve information from file, knowing it is formatted as specified in the SRS
         // gets the number of candidates
         int numCands = Integer.parseInt(s.nextLine());
+        if( numCands <= 0){
+            throw new IllegalArgumentException("Error: There must be at least 1 candidate");
+        }
 
         // Names and parties of the candidates
         String[] candStrings = s.nextLine().split(",");
@@ -57,15 +59,11 @@ public class IRFileProcessor extends FileProcessor{
                     break;
                 }
                 if((k == numCands-1 && numCands > rankings.length) || rankings[k].equals("")){
-
                     continue;
                 }
-
                 int candidateIndex = Integer.parseInt(rankings[k]) - 1;
                 currBallot[candidateIndex] =  candidates[k];
                 numVotes += 1;
-
-
             }
 
             LinkedList<IRCandidate> temp = new LinkedList<>();
@@ -73,15 +71,15 @@ public class IRFileProcessor extends FileProcessor{
                 if(k==0){
                     currBallot[k].incrementVotes(1);
                     temp.add(currBallot[k]);
-
                 }
                 else{temp.add(currBallot[k]);}
-
             }
-            System.out.println(temp);
+
+            System.out.println("Ballot " + (i+1) + ": " + temp);
             IRBallot resBallot = new IRBallot(temp);
             ballots[i] = resBallot;
         }
+        System.out.println();
         s.close();
 
         int n = candidates.length;
@@ -97,16 +95,11 @@ public class IRFileProcessor extends FileProcessor{
             }
             candidates[i + 1] = curr;
         }
+
+        System.out.println("INITIAL VOTE COUNT: ");
         for (int i = 0; i<candidates.length; i ++){
-            System.out.println(candidates[i].getName());
-            System.out.println(candidates[i].numVotes);
+            System.out.println(candidates[i].getName() + ": " + candidates[i].numVotes);
         }
         return new IRElection(candidates, ballots);
     }
-    //TODO: what are these methods?
-//    public void countVotes(IRBallot[] ballots){
-//    }
-//    public IRCandidate[] rankCandidates(IRCandidate[] candidates){
-//        return null;
-//    }
 }

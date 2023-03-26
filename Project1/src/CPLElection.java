@@ -68,24 +68,17 @@ public class CPLElection extends Election {
      * @return An int representing the number of seats that were allocated in this round of allocation
      */
     public int firstSeatAlloc(int quota, int seatsAllocated){
-        for (CPLParty party : parties){
-            if(quota == 0){
-                break;
-            }
-            int seats = (int) (Math.floor(party.getNumVotes() / quota)); // seats that can be assigned without further work
-
-            // Makes sure a party doesn't get more seats than they have candidates
-            if (party.getNumPartyCandidates() < seats){
-                seats = party.getNumPartyCandidates();
-                party.setNumVotesAfterFirstAllocation(-1);
-            }
-            else{
-                party.setNumVotesAfterFirstAllocation(party.getNumVotes() - quota*seats);
+        for (int i = 0; i < parties.length;i++){
+            int seats = (int) (Math.floor(parties[i].getNumVotes() / quota)); // seats that can be assigned without further work
+            if(seats > parties[i].getNumPartyCandidates()){
+                seats = parties[i].getNumPartyCandidates();
+                parties[i].setNumVotesAfterFirstAllocation(-1);
             }
 
             seatsAllocated += seats;
-            party.setNumSeatsAllotedFirst(seats);
+            parties[i].setNumSeatsAllotedFirst(seats);
             // subtract votes used towards seats already alloted to this party
+            parties[i].setNumVotesAfterFirstAllocation(parties[i].getNumVotes() - quota*seats);
 
         }
         return seatsAllocated;
