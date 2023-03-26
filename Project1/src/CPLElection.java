@@ -1,15 +1,13 @@
-// CPLElection.java represents a single CPL election and conducts and necessary algorithms for it
 // inherits from abstract class Election
 // author: Alex Iliarski (iliar004)
 
 import java.lang.Math;
 import java.io.File;
 import java.io.FileWriter; // TODO:: may need to add to UML class diagram?
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
- * Represents a single CPL election and conducts the necessary algorithms for it
+ * A Closed Party list election. A CPLElection object is used to determine the winner in a given CPL election.
  */
 public class CPLElection extends Election {
     private CPLParty[] parties; // Just realized this is just the same as voteables - TODO:: remove comment
@@ -25,6 +23,7 @@ public class CPLElection extends Election {
      */
     public CPLElection(CPLParty[] parties, CPLBallot[] ballots, int numballots, int numSeats){
         this.parties = parties;
+        this.voteables = parties;
         this.numVoteables = parties.length;
         this.ballots = ballots;
         this.numBallots = numballots;
@@ -33,7 +32,7 @@ public class CPLElection extends Election {
     }
 
     /**
-     * gets the number of seats to be filled in the CPL election
+     * Gets the number of seats to be filled in the CPL election
      * @return An int representing the number of seats to be filled in the CPL election
      */
     public int getNumSeats() {
@@ -41,7 +40,7 @@ public class CPLElection extends Election {
     }
 
     /**
-     * gets the names of candidates that won seats in the CPL election
+     * Gets the names of candidates that won seats in the CPL election
      * @return A String[] of the names of candidates that won seats in the CPL election
      */
     public String[] getResults() {
@@ -80,12 +79,13 @@ public class CPLElection extends Election {
             parties[i].setNumSeatsAllotedFirst(seats);
             // subtract votes used towards seats already alloted to this party
             parties[i].setNumVotesAfterFirstAllocation(parties[i].getNumVotes() - quota*seats);
+
         }
         return seatsAllocated;
     }
 
     /**
-     * conducts second allocation of seats, goes in order of most votes remaining after initial allocation of seats (largest remainder algorithm)
+     * Conducts second allocation of seats in order of most votes remaining after initial allocation of seats (largest remainder algorithm)
      * @param quota An int representing the number of votes needed to automatically be assigned a seat
      * @param seatsAllocated An int representing the number of seats priorly allocated
      */
@@ -124,7 +124,7 @@ public class CPLElection extends Election {
     }
 
     /**
-     * since some parties got NumVotesAfterFirstAllocation changed to -1, we have to reset it to its original value
+     * Since some parties got NumVotesAfterFirstAllocation changed to -1, we have to reset it to its original value
      * @param quota An int representing the number of votes needed to automatically be assigned a seat
      */
     public void resetNumVotesFirstAlloc(int quota){
@@ -171,7 +171,7 @@ public class CPLElection extends Election {
     }
 
     /**
-     * Executes the CPL election algorithms (largest remainder algorithm)
+     * Executes the CPL election algorithms using the largest remainder algorithm
      */
     public void runElection(){
         CPLParty tempParty;
@@ -183,7 +183,7 @@ public class CPLElection extends Election {
     }
 
     /**
-     * prints winners of seats in CPL election results to console. should only be called after runElection()
+     * Prints winners of seats in CPL election results to console
      */
     public void printElectionResults(){
         System.out.println("The winners of seats are: ");
@@ -211,7 +211,14 @@ public class CPLElection extends Election {
         for (CPLParty party : parties){ // loop through each party and add its info to auditfile on a single line
             int partyTotalSeats = party.getNumSeatsAllotedFirst() + party.getNumSeatsAllotedSecond();
             int percSeats = Math.round(100 * partyTotalSeats / numSeats);
-            int percVote = Math.round(100 * party.getNumVotes() / numBallots);
+
+            int percVote;
+            if(numBallots == 0){
+                percVote = 0;
+            }
+            else{
+                percVote = Math.round(100 * party.getNumVotes() / numBallots);
+            }
             String percString = String.valueOf(percVote) + "% / " + String.valueOf(percSeats) + "% \n";
             out += String.format("%-20s | %-10d | %-11d | %-9d | %-10d | %-5d | %-10s \n", party.getName(),
                     party.getNumVotes(), party.getNumSeatsAllotedFirst(), party.getNumVotesAfterFirstAllocation(),

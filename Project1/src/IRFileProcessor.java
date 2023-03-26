@@ -1,4 +1,3 @@
-// inherits from abstract class FileProcessor
 // Handles processing of a CSV file containing information about an IR election
 
 import java.io.FileNotFoundException;
@@ -7,10 +6,21 @@ import java.util.Scanner;
 import java.io.File;
 import java.util.Arrays;
 
+/**
+ * Handles processing of an input CSV file containing information about an IR election
+ */
 public class IRFileProcessor extends FileProcessor{
+    /**
+     * Default constructor initializing the IRFileProcessor
+     */
     public IRFileProcessor(){}
 
-    // reads through CSV file containing CPL election data and returns a corresponding CPLElection object
+    /**
+     * Reads through CSV file containing IR election data and returns a corresponding IRElection object after
+     * parsing the necessary election data from the file.
+     * @param inputFile A File object for the input CSV file containing election information
+     * @return An IRElection object with all the candidates and ballots parsed from the file
+     */
     public Election processFile(File inputFile){
         Scanner s;
         try {
@@ -41,6 +51,7 @@ public class IRFileProcessor extends FileProcessor{
         IRBallot[] ballots = new IRBallot[numBallots];
         for(int i = 0; i<numBallots; i++){
             String[] rankings = s.nextLine().split(",");
+
             IRCandidate[] currBallot = new IRCandidate[numCands];
             int numVotes = 0;
             for(int k = 0; k < numCands; k++){
@@ -74,8 +85,10 @@ public class IRFileProcessor extends FileProcessor{
         int n = candidates.length;
         for (int j = 1; j < n; j++) {
             IRCandidate curr = candidates[j];
-            int key = candidates[j].numVotes;
+            int key = candidates[j].getNumVotes();
             int i = j - 1;
+
+            //THIS MAY BE WRONG (THE WHILE LOOP CONDITION)
             while ((i > -1) && (candidates[i].numVotes < key)) {
                 candidates[i + 1] = candidates[i];
                 i--;

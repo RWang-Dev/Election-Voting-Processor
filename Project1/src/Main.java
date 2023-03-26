@@ -1,12 +1,16 @@
-// Main.java, is the main runner file for the program
 // author: Alex Iliarski (iliar004)
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.Scanner;
+
 import java.util.Arrays;
 
+/**
+ * Main runner file for the program
+ */
+//>>>>>>> 996c0d39c3019428a6e00544eed278b4dbe08939
 public class Main{
     /**
      * main() of the program

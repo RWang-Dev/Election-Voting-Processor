@@ -1,4 +1,3 @@
-// inherits from abstract class Voteable
 // represents a candidate object in an IR election
 
 import java.util.ArrayList;
@@ -29,6 +28,7 @@ public class IRCandidate extends Voteable implements Comparable<IRCandidate>{
         voteCountHistory.add(this.numVotes);
     }
 
+    //TODO: method not used
     /**
      * Gets the vote count history
      * @return an ArrayList representing the vote count history and recording the number of votes each
@@ -39,6 +39,7 @@ public class IRCandidate extends Voteable implements Comparable<IRCandidate>{
         return this.voteCountHistory;
     }
 
+
     public int compareTo(IRCandidate other){
         return 1;
     }
@@ -46,5 +47,4 @@ public class IRCandidate extends Voteable implements Comparable<IRCandidate>{
     public String toString(){
         return this.getName();
     }
-
 }
