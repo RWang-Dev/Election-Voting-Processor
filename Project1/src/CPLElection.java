@@ -61,7 +61,7 @@ public class CPLElection extends Election {
      * Assigns every value in the input array to null
      * @param arr A CPLParty[] array of all null values
      */
-    public void clearArray(CPLParty[] arr){
+    private void clearArray(CPLParty[] arr){
         for (int i = 0; i < arr.length; i++){
             if (arr[i] != null){
                 arr[i] = null;
@@ -75,7 +75,7 @@ public class CPLElection extends Election {
      * @param seatsAllocated An int representing the number of seats priorly allocated (always 0)
      * @return An int representing the number of seats that were allocated in this round of allocation
      */
-    public int firstSeatAlloc(int quota, int seatsAllocated){
+    private int firstSeatAlloc(int quota, int seatsAllocated){
         for (int i = 0; i < parties.length;i++){
             int seats = (int) (Math.floor(parties[i].getNumVotes() / quota)); // seats that can be assigned without further work
             if(seats > parties[i].getNumPartyCandidates()){
@@ -99,7 +99,7 @@ public class CPLElection extends Election {
      * @param quota An int representing the number of votes needed to automatically be assigned a seat
      * @param seatsAllocated An int representing the number of seats priorly allocated
      */
-    public void secondSeatAlloc(int quota, int seatsAllocated){
+    private void secondSeatAlloc(int quota, int seatsAllocated){
         while (seatsAllocated < numSeats && seatsAllocated < totalNumCandidates){
             int max = -1;
             CPLParty maxParty = null;
@@ -152,12 +152,12 @@ public class CPLElection extends Election {
     /**
      * After all seats are fully allocated, the names of seat-winning candidates are added to results[]
      */
-    public void addToResults(){
+    private void addToResults(){
         int k = 0;
         for (CPLParty party : parties){ // loop through all parties
             String[] partycands = party.getPartyCandidates();
             int partySeats = party.getNumSeatsAllotedFirst() + party.getNumSeatsAllotedSecond();
-            for (int i = 0; i < partySeats; i++){ // for each seat alloted to party, add candidate to results[]
+            for (int i = 0; i < partySeats; i++){ // for each seat allotted to party, add candidate to results[]
                 results[k] = partycands[i];
                 k++;
             }
@@ -167,7 +167,7 @@ public class CPLElection extends Election {
     /**
      * Implements the largest remainder algorithm of CPL election seat distribution
      */
-    public void assignSeats(){
+    private void assignSeats(){
         // quota is the amount of votes to automatically get a seat
         int quota = Math.round(numBallots / numSeats); // TODO:: is it correct to do rounding on it?
         int seatsAllocated = 0;

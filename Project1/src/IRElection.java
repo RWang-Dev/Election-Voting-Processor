@@ -179,7 +179,7 @@ public class IRElection extends Election{
         return candidates;
     }
 
-    IRCandidate[] rerank_n(IRCandidate[] cands, int num_ties){
+    private IRCandidate[] rerank_n(IRCandidate[] cands, int num_ties){
         IRCandidate[] temp_candidates = new IRCandidate[num_ties];
         for (int i = 0; i < num_ties; i++){
             temp_candidates[i] = new IRCandidate("name" + i, i);
