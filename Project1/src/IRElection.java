@@ -59,6 +59,10 @@ public class IRElection extends Election{
      * of candidates and their votes are redistributed.
      */
     public void eliminateCandidate(){
+        if(numValidCandidates <= 1){
+            throw new IllegalCallerException("Can't eliminate candidate" +
+                    "if one or less candidates.");
+        }
         IRCandidate cand = rankedCandidates[numValidCandidates - 1];
         this.eliminatedCandidates.add(cand);
 
@@ -93,6 +97,7 @@ public class IRElection extends Election{
     public void runElection(){
         // Initial input for BallotHistory - for audit file
         updateVoteCountHistories();
+        reRankCandidates();
         int total = this.getNumBallots();
 
         while(this.rankedCandidates[0].getNumVotes() <= total/2) {

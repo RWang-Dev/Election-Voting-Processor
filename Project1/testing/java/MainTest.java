@@ -4,13 +4,13 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class MainTest {
-
     @Test
     void TestMainNoBallots() throws IOException {
         // Set System.in to custom stream
@@ -32,6 +32,7 @@ class MainTest {
         for (IRCandidate winner : winners){
             id_counts[winner.getID()]++;
         }
+        System.out.println(Arrays.toString(id_counts));
 
         for (int id_count: id_counts) {
             assertTrue(id_count < 350 && id_count > 100);
