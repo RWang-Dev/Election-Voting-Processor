@@ -5,6 +5,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -41,20 +42,19 @@ public class FileHandlerTest {
         // fp is the control
         File fp = new File("Project1/testing/csvTestFiles/testCPL.csv");
 
-        // Set System.in to custom stream
-        InputStream sysInBackup = System.in; // backup System.in to restore it later
-        ByteArrayInputStream in = new ByteArrayInputStream("Project1/testing/csvTestFiles/testCPL.csv".getBytes());
-        System.setIn(in);
-
-        File fp_from_input = defaultHandler.openFile();
-        assertEquals(fp, fp_from_input);
-
-        // reset System.in to its original
-        System.setIn(sysInBackup);
-
-
         // Test already inputted
         File fp_in = preInputHandler.openFile();
         assertEquals(fp, fp_in);
+
+        // Set System.in to custom stream
+        InputStream sysInBackup = System.in; // backup System.in to restore it later
+        ByteArrayInputStream in = new ByteArrayInputStream("testCPL.csv".getBytes());
+        System.setIn(in);
+
+        File fp_from_input = defaultHandler.openFile();
+        System.out.println(fp_from_input);
+
+        // reset System.in to its original
+        System.setIn(sysInBackup);
     }
 }
