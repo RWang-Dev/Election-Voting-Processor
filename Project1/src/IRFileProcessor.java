@@ -100,7 +100,6 @@ public class IRFileProcessor extends FileProcessor{
         for (int i = 0; i<candidates.length; i ++){
             System.out.println(candidates[i].getName() + ": " + candidates[i].numVotes);
         }
-        System.out.println();
         return new IRElection(candidates, ballots);
     }
 }

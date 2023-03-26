@@ -7,48 +7,54 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+
 
 class IRElectionTest {
-    IRCandidate Rosen = new IRCandidate("Rosen (D)", 0);
+    IRFileProcessor processor = new IRFileProcessor();
+    IRElection testElection = (IRElection) processor.processFile
+            (new FileHandler("Project1/src/testIRMain.csv").openFile());
+    IRElection testIRNoMajorityWinner = (IRElection) processor.processFile
+            (new FileHandler("Project1/src/testIRNoMajorityWinner.csv").openFile());
+    IRElection testIROneBallot = (IRElection) processor.processFile
+            (new FileHandler("Project1/src/testIROneBallot.csv").openFile());
+    IRElection testIROneCandidate = (IRElection) processor.processFile
+            (new FileHandler("Project1/src/testIROneCandidate.csv").openFile());
+    IRElection testIRTiedCandidates = (IRElection) processor.processFile
+            (new FileHandler("Project1/src/testIRTiedCandidates.csv").openFile());
+    IRElection testIRAllTied = (IRElection) processor.processFile
+            (new FileHandler("Project1/src/testIRAllTied.csv").openFile());
 
-    IRCandidate Kleinberg = new IRCandidate("Kleinberg (R)", 1);
-    IRCandidate Chou = new IRCandidate("Chou (I)", 2);
-    IRCandidate Royce = new IRCandidate("Royce (L)", 3);
+    IRCandidate Rosen = new IRCandidate("Rosen (D)",0);
+    IRCandidate Kleinberg = new IRCandidate("Kleinberg (R)",0);
+    IRCandidate Chou = new IRCandidate("Chou (I)",0);
+    IRCandidate Royce = new IRCandidate("Royce (L)",0);
 
-    LinkedList<IRCandidate> b1 = new LinkedList<>(Arrays.asList(Rosen, Kleinberg, Chou, Royce));
-    LinkedList<IRCandidate> b2 = new LinkedList<>(Arrays.asList(Rosen, Kleinberg, Chou, Royce));
-    LinkedList<IRCandidate> b3 = new LinkedList<>(Arrays.asList(Rosen, Kleinberg, Chou, Royce));
-    LinkedList<IRCandidate> b4 = new LinkedList<>(Arrays.asList(Kleinberg, Rosen, Chou, Royce));
-    LinkedList<IRCandidate> b5 = new LinkedList<>(Arrays.asList(Kleinberg, Rosen, Chou, Royce));
-    LinkedList<IRCandidate> b6 = new LinkedList<>(Arrays.asList(Chou, Rosen, Kleinberg, Royce));
-    IRBallot B1 = new IRBallot(b1);
-    IRBallot B2 = new IRBallot(b2);
-    IRBallot B3 = new IRBallot(b3);
-    IRBallot B4 = new IRBallot(b4);
-    IRBallot B5 = new IRBallot(b5);
-    IRBallot B6 = new IRBallot(b6);
-
-
-    IRBallot[] testBallot = new IRBallot[]{B1, B2, B3, B4, B5, B6};
-    IRCandidate[] candidates = new IRCandidate[]{Rosen, Kleinberg, Chou, Royce};
-    IRElection testElection = new IRElection(candidates, testBallot);
-    @BeforeAll
-    void init(){
-        Rosen.incrementVotes(3);
-        Kleinberg.incrementVotes(2);
-        Chou.incrementVotes(1);
-    }
     @Test
     void getNumCandidates() {
         int numCandidates = testElection.getNumCandidates();
         assertEquals(4, numCandidates);
+        numCandidates = testIRTiedCandidates.getNumCandidates();
+        assertEquals(4, numCandidates);
+        numCandidates = testIRNoMajorityWinner.getNumCandidates();
+        assertEquals(4, numCandidates);
+        numCandidates = testIROneCandidate.getNumCandidates();
+        assertEquals(1, numCandidates);
+        numCandidates = testIROneBallot.getNumCandidates();
+        assertEquals(2, numCandidates);
+
+
     }
 
     @Test
     void getNumBallots() {
         int numBallots = testElection.getNumBallots();
         assertEquals(6, numBallots);
+        numBallots = testIROneCandidate.getNumBallots();
+        assertEquals(5, numBallots);
+        numBallots = testIROneBallot.getNumBallots();
+        assertEquals(1, numBallots);
+        numBallots = testIRNoMajorityWinner.getNumBallots();
+        assertEquals(10, numBallots);
     }
 
     @Test
@@ -58,38 +64,101 @@ class IRElectionTest {
         for(int i = 0; i<expCandidates.length; i++){
             assertEquals(expCandidates[i], resCandidates[i]);
         }
-
-
     }
 
     @Test
     void eliminateCandidate() {
-
-
-
         testElection.eliminateCandidate();
         IRCandidate[] expCandidates = new IRCandidate[]{Rosen, Kleinberg, Chou, Royce};
-
         for(int i = 0; i < 4; i++){
 
-            assertEquals(expCandidates[i], testElection.getCandidates()[i]);
+            assertEquals(expCandidates[i].getName(), testElection.getCandidates()[i].getName());
         }
-
         assertEquals(-1, testElection.getCandidates()[testElection.getNumCandidates()-1].getNumVotes());
         assertEquals(-1, testElection.getCandidates()[testElection.getNumCandidates()-1].getNumVotes());
         testElection.eliminateCandidate();
         for(int i = 0; i < 4; i++){
-            assertEquals(expCandidates[i], testElection.getCandidates()[i]);
+            assertEquals(expCandidates[i].getName(), testElection.getCandidates()[i].getName());
         }
-
         assertEquals(4, testElection.getCandidates()[0].getNumVotes());
+
+        testIROneCandidate.eliminateCandidate(); //TODO:: CAUSES A BUG!!!!!!!!
+        expCandidates = new IRCandidate[]{Rosen};
+        for(int i = 0; i < testIROneCandidate.getNumCandidates(); i++){
+
+            assertEquals(expCandidates[i].getName(), testElection.getCandidates()[i].getName());
+        }
 
     }
 
     @Test
     void runElection() {
         testElection.runElection();
-        assertEquals(Rosen, testElection.getCandidates()[0]);
+        assertEquals(Rosen.getName(), testElection.getCandidates()[0].getName());
+
+        testIROneCandidate.runElection();
+        assertEquals(Rosen.getName(), testElection.getCandidates()[0].getName());
+
+        testIROneBallot.runElection();
+        assertEquals(Rosen.getName(), testElection.getCandidates()[0].getName());
+
+        int ctRosen = 0;
+        int ctKleinberg = 0;
+        int ctChou = 0;
+        int ctRoyce = 0;
+
+
+        for(int i = 0; i<1000; i ++){
+            testIRTiedCandidates = (IRElection) processor.processFile
+                    (new FileHandler("Project1/src/testIRTiedCandidates.csv").openFile());
+
+            testIRTiedCandidates.runElection();
+
+
+            if(testIRTiedCandidates.getCandidates()[0].getName().equals(Rosen.getName())){
+                ctRosen ++;
+            }else if(testIRTiedCandidates.getCandidates()[0].getName().equals(Kleinberg.getName())) {
+                ctKleinberg ++;
+            }else if(testIRTiedCandidates.getCandidates()[0].getName().equals(Chou.getName())) {
+                ctChou ++;
+            }else if(testIRTiedCandidates.getCandidates()[0].getName().equals(Royce.getName())) {
+                ctRoyce ++;
+            }
+        }
+
+        assertTrue(ctRosen < 650 && ctRosen > 400);
+        assertTrue(ctRoyce < 650 && ctRoyce > 400);
+
+        ctRosen = 0;
+        ctKleinberg = 0;
+        ctChou = 0;
+        ctRoyce = 0;
+        for(int i = 0; i<1000; i++){
+            testIRAllTied = (IRElection) processor.processFile
+                    (new FileHandler("Project1/src/testIRAllTied.csv").openFile());
+            testIRAllTied.runElection();
+            if(testIRAllTied.getCandidates()[0].getName().equals(Rosen.getName())){
+                ctRosen ++;
+            }else if(testIRAllTied.getCandidates()[0].getName().equals(Kleinberg.getName())) {
+                ctKleinberg ++;
+            }else if(testIRAllTied.getCandidates()[0].getName().equals(Chou.getName())) {
+                ctChou ++;
+            }else if(testIRAllTied.getCandidates()[0].getName().equals(Royce.getName())) {
+                ctRoyce ++;
+            }
+        }
+
+        System.out.println(ctRosen);
+        System.out.println(ctKleinberg);
+        System.out.println(ctChou);
+        System.out.println(ctRoyce);
+        assertTrue(ctRosen < 400 && ctRosen > 200);
+        assertTrue(ctKleinberg < 400 && ctKleinberg > 200);
+        assertTrue(ctChou < 400 && ctChou > 200);
+        assertTrue(ctRoyce < 400 && ctRoyce > 200);
+        // TODO:: LAST CANDIDATE DOES NOT GET BREAK TIE
+//
+
     }
 
     @Test
