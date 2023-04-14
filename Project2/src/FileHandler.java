@@ -20,7 +20,7 @@ public class FileHandler{
 
     /**
      * Alternate constructor used when filename provided as run argument
-     * @param filename
+     * @param filename a String representing the name of the file to open
      */
     public FileHandler(String filename){
         this.filename = filename;
@@ -35,8 +35,17 @@ public class FileHandler{
         // prompt user for input filename
         System.out.println("Enter the name of the CSV file containing ballot information: ");
 
+        // Check that the file entered does indeed exist
+        String fname = "Project2/src/" + in.nextLine();
+        File fp = new File(fname);
+        while (!fp.exists()){
+            System.out.println("Filename entered does not exist, try entering again: ");
+            fname = "Project2/src/" + in.nextLine();
+            fp = new File(fname);
+        }
+
         // assign class variable to user's input
-        this.filename = "Project1/src/" + in.nextLine();
+        this.filename = fname;
     }
 
     /**
@@ -50,6 +59,14 @@ public class FileHandler{
         }
 
         File fp = new File(this.filename);
+
+        // Check that filename entered as arg to Main is valid, else prompt for re-entry
+        if (!fp.exists()){
+            System.out.println("Filename entered as argument does not exist, try entering again: ");
+            getFileNameFromInput();
+            fp = new File(this.filename);
+        }
+
         return fp;
     }
 }
