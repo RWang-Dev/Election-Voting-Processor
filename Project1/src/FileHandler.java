@@ -1,6 +1,7 @@
-// FileHandler.java, handles creating File object and possibly getting filename from user input
 // author: Alex Iliarski (iliar004)
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.Scanner;
 import java.io.File;
 
@@ -35,7 +36,7 @@ public class FileHandler{
         System.out.println("Enter the name of the CSV file containing ballot information: ");
 
         // assign class variable to user's input
-        this.filename = in.nextLine();
+        this.filename = "Project1/src/" + in.nextLine();
     }
 
     /**

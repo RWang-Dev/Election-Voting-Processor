@@ -1,4 +1,3 @@
-// CPLParty.java represents a party object that voters vote for in a CPL election. Inherits from abstract class Voteable
 // author: Alex Iliarski (iliar004)
 
 /**
@@ -51,6 +50,10 @@ public class CPLParty extends Voteable {
      * @return A String[] of the top numSeats candidates listed by a party
      */
     public String[] getTopPartyCandidates(int numSeats){
+        if(numSeats > this.rankedPartyCandidates.length){
+            numSeats = this.rankedPartyCandidates.length;
+        }
+
         String[] out = new String[numSeats];
         for (int i = 0; i<numSeats; i++){
             out[i] = this.rankedPartyCandidates[i];
@@ -88,6 +91,9 @@ public class CPLParty extends Voteable {
      * @param seats An int representing the number of seats allocated to a party after the initial allocation of seats
      */
     public void setNumSeatsAllotedFirst(int seats) {
+        if(seats < 0){
+            throw new IllegalArgumentException();
+        }
         this.numSeatsAllotedFirst = seats;
     }
 
@@ -96,6 +102,9 @@ public class CPLParty extends Voteable {
      * @param seats An int representing the number of seats allocated to a party during the second allocation of seats
      */
     public void setNumSeatsAllotedSecond(int seats) {
+        if(seats < 0){
+            throw new IllegalArgumentException();
+        }
         this.numSeatsAllotedSecond = seats;
     }
 

@@ -1,19 +1,23 @@
-// Main.java, is the main runner file for the program
 // author: Alex Iliarski (iliar004)
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.LinkedList;
 import java.util.Scanner;
+
+import java.util.Arrays;
 
 /**
  * Main runner file for the program
  */
+//>>>>>>> 996c0d39c3019428a6e00544eed278b4dbe08939
 public class Main{
     /**
      * main() of the program
      * @param args command line arguments to program
      */
     public static void main(String[] args){
+
         FileHandler fh;
 
         // create FileHandler object based on if filename is input to command line or not
@@ -33,7 +37,7 @@ public class Main{
             scnr = new Scanner(fp);
         }
         catch (FileNotFoundException ex) {
-            // TODO:: Modify behavior here?
+
             System.out.println("ERROR: File not found");
             return;
         }
@@ -48,8 +52,8 @@ public class Main{
         else if (firstLine.equals("CPL")){
             fileP = new CPLFileProcessor();
         }
-        else { // TODO:: can change how we handle this error
-            System.out.println("ERROR: File incorectly formatted");
+        else {
+            System.out.println("ERROR: File incorrectly formatted");
             return;
         }
         scnr.close(); // close Scanner, rest of file will be read later
@@ -59,6 +63,7 @@ public class Main{
 
         // run election algorithms
         currentElection.runElection();
+
 
         // print election results and create Audit file with election information
         currentElection.printElectionResults();

@@ -1,20 +1,22 @@
-// CPLElection.java represents a single CPL election and conducts and necessary algorithms for it
 // inherits from abstract class Election
 // author: Alex Iliarski (iliar004)
 
 import java.lang.Math;
 import java.io.File;
 import java.io.FileWriter; // TODO:: may need to add to UML class diagram?
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
- * Represents a single CPL election and conducts the necessary algorithms for it
+ * A Closed Party list election. A CPLElection object is used to determine the winner in a given CPL election.
  */
 public class CPLElection extends Election {
-    private CPLParty[] parties; // Just realized this is just the same as voteables - TODO:: remove comment
+    private CPLParty[] parties;
     private int numSeats;
     private String[] results;
+    private int totalNumCandidates;
 
     /**
      * Creates a CPLElection object and assigns values to instance variables
@@ -25,15 +27,20 @@ public class CPLElection extends Election {
      */
     public CPLElection(CPLParty[] parties, CPLBallot[] ballots, int numballots, int numSeats){
         this.parties = parties;
+        this.voteables = parties;
         this.numVoteables = parties.length;
         this.ballots = ballots;
         this.numBallots = numballots;
         this.numSeats = numSeats;
         this.results = new String[numSeats];
+
+        for(var party: parties){
+            totalNumCandidates += party.getNumPartyCandidates();
+        }
     }
 
     /**
-     * gets the number of seats to be filled in the CPL election
+     * Gets the number of seats to be filled in the CPL election
      * @return An int representing the number of seats to be filled in the CPL election
      */
     public int getNumSeats() {
@@ -41,7 +48,7 @@ public class CPLElection extends Election {
     }
 
     /**
-     * gets the names of candidates that won seats in the CPL election
+     * Gets the names of candidates that won seats in the CPL election
      * @return A String[] of the names of candidates that won seats in the CPL election
      */
     public String[] getResults() {
@@ -54,7 +61,7 @@ public class CPLElection extends Election {
      * Assigns every value in the input array to null
      * @param arr A CPLParty[] array of all null values
      */
-    public void clearArray(CPLParty[] arr){
+    private void clearArray(CPLParty[] arr){
         for (int i = 0; i < arr.length; i++){
             if (arr[i] != null){
                 arr[i] = null;
@@ -68,48 +75,61 @@ public class CPLElection extends Election {
      * @param seatsAllocated An int representing the number of seats priorly allocated (always 0)
      * @return An int representing the number of seats that were allocated in this round of allocation
      */
-    public int firstSeatAlloc(int quota, int seatsAllocated){
-        for (CPLParty party : parties){
-            int seats = (int) (Math.floor(party.getNumVotes() / quota)); // seats that can be assigned without further work
+    private int firstSeatAlloc(int quota, int seatsAllocated){
+        for (int i = 0; i < parties.length;i++){
+            int seats = (int) (Math.floor(parties[i].getNumVotes() / quota)); // seats that can be assigned without further work
+            if(seats > parties[i].getNumPartyCandidates()){
+                seats = parties[i].getNumPartyCandidates();
+                parties[i].setNumVotesAfterFirstAllocation(-1);
+            }
+            else{
+                parties[i].setNumVotesAfterFirstAllocation(parties[i].getNumVotes() - quota*seats);
+            }
+
             seatsAllocated += seats;
-            party.setNumSeatsAllotedFirst(seats);
+            parties[i].setNumSeatsAllotedFirst(seats);
             // subtract votes used towards seats already alloted to this party
-            party.setNumVotesAfterFirstAllocation(party.getNumVotes() - quota*seats);
+
         }
         return seatsAllocated;
     }
 
     /**
-     * conducts second allocation of seats, goes in order of most votes remaining after initial allocation of seats (largest remainder algorithm)
+     * Conducts second allocation of seats in order of most votes remaining after initial allocation of seats (largest remainder algorithm)
      * @param quota An int representing the number of votes needed to automatically be assigned a seat
      * @param seatsAllocated An int representing the number of seats priorly allocated
      */
-    public void secondSeatAlloc(int quota, int seatsAllocated){
-        while (seatsAllocated < numSeats){
+    private void secondSeatAlloc(int quota, int seatsAllocated){
+        while (seatsAllocated < numSeats && seatsAllocated < totalNumCandidates){
             int max = -1;
             CPLParty maxParty = null;
-            CPLParty[] tieForMax = new CPLParty[numVoteables]; // tracks tied parties for maxvotes, in case of tie
+            ArrayList<CPLParty> tieForMax = new ArrayList<>(); // tracks tied parties for maxvotes, in case of tie
             boolean isTie = false;
             for (CPLParty party : parties){ // loop through all parties to find the one with the most remaining votes
                 if (party.getNumVotesAfterFirstAllocation() > max){ // new max found
                     max = party.getNumVotesAfterFirstAllocation();
                     maxParty = party;
-                    clearArray(tieForMax); // clear tieformax, since we have a new max
+                    tieForMax.clear(); // clear tieformax, since we have a new max
                     isTie = false;
-                    tieForMax[0] = maxParty;
+                    tieForMax.add(maxParty);
                 }
                 else if (party.getNumVotesAfterFirstAllocation() == max){ // tie for max
                     isTie = true;
-                    int i = 1;
-                    while (i < numVoteables && tieForMax[i] != null){ // find first open slot in tieForMax
-                        i++;
-                    }
-                    tieForMax[i] = party; // add party to tieForMax array
+                    tieForMax.add(maxParty);
                 }
             }
 
+            CPLParty[] tieForMaxArray = new CPLParty[tieForMax.size()];
+            for(int i = 0; i < tieForMax.size(); i++){
+                tieForMaxArray[i] = tieForMax.get(i);
+            }
+
             if (isTie){ // if there is a tie for the max, then must break tie to determine winner of seat
-                maxParty = tieForMax[breakTie(tieForMax)];
+                maxParty = tieForMax.get(breakTie( tieForMaxArray));
+            }
+
+            if(maxParty == null){
+                break;
             }
 
             seatsAllocated ++;
@@ -119,7 +139,7 @@ public class CPLElection extends Election {
     }
 
     /**
-     * since some parties got NumVotesAfterFirstAllocation changed to -1, we have to reset it to its original value
+     * Since some parties got NumVotesAfterFirstAllocation changed to -1, we have to reset it to its original value
      * @param quota An int representing the number of votes needed to automatically be assigned a seat
      */
     public void resetNumVotesFirstAlloc(int quota){
@@ -132,12 +152,12 @@ public class CPLElection extends Election {
     /**
      * After all seats are fully allocated, the names of seat-winning candidates are added to results[]
      */
-    public void addToResults(){
+    private void addToResults(){
         int k = 0;
         for (CPLParty party : parties){ // loop through all parties
             String[] partycands = party.getPartyCandidates();
             int partySeats = party.getNumSeatsAllotedFirst() + party.getNumSeatsAllotedSecond();
-            for (int i = 0; i < partySeats; i++){ // for each seat alloted to party, add candidate to results[]
+            for (int i = 0; i < partySeats; i++){ // for each seat allotted to party, add candidate to results[]
                 results[k] = partycands[i];
                 k++;
             }
@@ -147,13 +167,19 @@ public class CPLElection extends Election {
     /**
      * Implements the largest remainder algorithm of CPL election seat distribution
      */
-    public void assignSeats(){
+    private void assignSeats(){
         // quota is the amount of votes to automatically get a seat
         int quota = Math.round(numBallots / numSeats); // TODO:: is it correct to do rounding on it?
         int seatsAllocated = 0;
 
         // first allocation of seats that can be assigned solely by meeting quota
-        seatsAllocated = firstSeatAlloc(quota, seatsAllocated);
+        if(quota > 0){
+            seatsAllocated = firstSeatAlloc(quota, seatsAllocated);
+        }
+        else{
+            seatsAllocated = firstSeatAlloc(Integer.MAX_VALUE, seatsAllocated);
+        }
+
 
         // second allocation of seats
         secondSeatAlloc(quota, seatsAllocated);
@@ -166,7 +192,7 @@ public class CPLElection extends Election {
     }
 
     /**
-     * Executes the CPL election algorithms (largest remainder algorithm)
+     * Executes the CPL election algorithms using the largest remainder algorithm
      */
     public void runElection(){
         CPLParty tempParty;
@@ -178,12 +204,14 @@ public class CPLElection extends Election {
     }
 
     /**
-     * prints winners of seats in CPL election results to console. should only be called after runElection()
+     * Prints winners of seats in CPL election results to console
      */
     public void printElectionResults(){
         System.out.println("The winners of seats are: ");
         for (String cand : results){ // loop through each candidate in results[] and print it
-            System.out.println(cand);
+            if(cand != null){
+                System.out.println(cand);
+            }
         }
     }
 
@@ -191,7 +219,7 @@ public class CPLElection extends Election {
      * helper function for produceAuditFile(), does brunt of formatting of output txt file
      * @return A String that should be pasted into the output auditfile.txt
      */
-    public String produceAuditFileString(){
+    private String produceAuditFileString(){
         String out = "";
         String lineOfDashes = "-".repeat(175) + "\n";
         String columnHeadersLine1 = String.format("%-20s | %-10s | %-11s | %-9s | %-10s | %-5s | %-10s \n",
@@ -206,7 +234,14 @@ public class CPLElection extends Election {
         for (CPLParty party : parties){ // loop through each party and add its info to auditfile on a single line
             int partyTotalSeats = party.getNumSeatsAllotedFirst() + party.getNumSeatsAllotedSecond();
             int percSeats = Math.round(100 * partyTotalSeats / numSeats);
-            int percVote = Math.round(100 * party.getNumVotes() / numBallots);
+
+            int percVote;
+            if(numBallots == 0){
+                percVote = 0;
+            }
+            else{
+                percVote = Math.round(100 * party.getNumVotes() / numBallots);
+            }
             String percString = String.valueOf(percVote) + "% / " + String.valueOf(percSeats) + "% \n";
             out += String.format("%-20s | %-10d | %-11d | %-9d | %-10d | %-5d | %-10s \n", party.getName(),
                     party.getNumVotes(), party.getNumSeatsAllotedFirst(), party.getNumVotesAfterFirstAllocation(),
