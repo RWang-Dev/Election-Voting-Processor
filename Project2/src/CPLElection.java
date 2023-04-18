@@ -169,7 +169,7 @@ public class CPLElection extends Election {
      */
     private void assignSeats(){
         // quota is the amount of votes to automatically get a seat
-        int quota = Math.round(numBallots / numSeats); // TODO:: is it correct to do rounding on it?
+        int quota = (int)Math.ceil((double)numBallots / numSeats); // TODO:: is it correct to do rounding on it?
         int seatsAllocated = 0;
 
         // first allocation of seats that can be assigned solely by meeting quota
