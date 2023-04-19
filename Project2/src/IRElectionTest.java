@@ -2,6 +2,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
+import java.io.File;
 import java.util.LinkedList;
 import java.util.Arrays;
 
@@ -11,18 +12,20 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class IRElectionTest {
     IRFileProcessor processor = new IRFileProcessor();
-    IRElection testElection = (IRElection) processor.processFile
-            (new FileHandler("Project1/src/testIRMain.csv").openFile());
-    IRElection testIRNoMajorityWinner = (IRElection) processor.processFile
-            (new FileHandler("Project1/src/testIRNoMajorityWinner.csv").openFile());
-    IRElection testIROneBallot = (IRElection) processor.processFile
-            (new FileHandler("Project1/src/testIROneBallot.csv").openFile());
-    IRElection testIROneCandidate = (IRElection) processor.processFile
-            (new FileHandler("Project1/src/testIROneCandidate.csv").openFile());
-    IRElection testIRTiedCandidates = (IRElection) processor.processFile
-            (new FileHandler("Project1/src/testIRTiedCandidates.csv").openFile());
-    IRElection testIRAllTied = (IRElection) processor.processFile
-            (new FileHandler("Project1/src/testIRAllTied.csv").openFile());
+
+    File[] regular_election_files = new File[] {new FileHandler("Project1/src/testIRMain.csv").openFile()} ;
+    File[] no_majority_files = new File[] {new FileHandler("Project1/src/testIRNoMajorityWinner.csv").openFile()} ;
+    File[] one_ballot_files = new File[] {new FileHandler("Project1/src/testIROneBallot.csv").openFile()} ;
+    File[] one_cand_files = new File[] {new FileHandler("Project1/src/testIROneCandidate.csv").openFile()} ;
+    File[] tied_cands_files = new File[] {new FileHandler("Project1/src/testIRTiedCandidates.csv").openFile()} ;
+    File[] all_tied_files = new File[] {new FileHandler("Project1/src/testIRAllTied.csv").openFile()} ;
+
+    IRElection testElection = (IRElection) processor.processFile(regular_election_files);
+    IRElection testIRNoMajorityWinner = (IRElection) processor.processFile(no_majority_files);
+    IRElection testIROneBallot = (IRElection) processor.processFile(one_ballot_files);
+    IRElection testIROneCandidate = (IRElection) processor.processFile(one_cand_files);
+    IRElection testIRTiedCandidates = (IRElection) processor.processFile(tied_cands_files);
+    IRElection testIRAllTied = (IRElection) processor.processFile(all_tied_files);
 
     IRCandidate Rosen = new IRCandidate("Rosen (D)",0);
     IRCandidate Kleinberg = new IRCandidate("Kleinberg (R)",0);
@@ -122,8 +125,8 @@ class IRElectionTest {
 
 
         for(int i = 0; i<1000; i ++){
-            testIRTiedCandidates = (IRElection) processor.processFile
-                    (new FileHandler("Project1/src/testIRTiedCandidates.csv").openFile());
+            File[] test_tied_cands_files = new File[] {new FileHandler("Project1/src/testIRTiedCandidates.csv").openFile()};
+            testIRTiedCandidates = (IRElection) processor.processFile(test_tied_cands_files);
 
             testIRTiedCandidates.runElection();
 
@@ -147,8 +150,8 @@ class IRElectionTest {
         ctChou = 0;
         ctRoyce = 0;
         for(int i = 0; i<1000; i++){
-            testIRAllTied = (IRElection) processor.processFile
-                    (new FileHandler("Project1/src/testIRAllTied.csv").openFile());
+            File[] test_all_tied_files = new File[] {new FileHandler("Project1/src/testIRAllTied.csv").openFile()};
+            testIRAllTied = (IRElection) processor.processFile(test_all_tied_files);
             testIRAllTied.runElection();
             if(testIRAllTied.getCandidates()[0].getName().equals(Rosen.getName())){
                 ctRosen ++;

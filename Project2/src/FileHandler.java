@@ -62,7 +62,7 @@ public class FileHandler{
 
         // Check that filename entered as arg to Main is valid, else prompt for re-entry
         if (!fp.exists()){
-            System.out.println("Filename entered as argument does not exist, try entering again: ");
+            System.out.println("Filename '" + this.filename + "' entered as argument does not exist, try entering again: ");
             getFileNameFromInput();
             fp = new File(this.filename);
         }

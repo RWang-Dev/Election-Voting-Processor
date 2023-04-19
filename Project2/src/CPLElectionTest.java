@@ -12,7 +12,8 @@ class CPLElectionTest {
 
     @Test
     void runNormalElectionTest() {
-        CPLElection normal_election = (CPLElection) processor.processFile(fh_normal_election.openFile());
+        File[] normal_files = new File[] {fh_normal_election.openFile()};
+        CPLElection normal_election = (CPLElection) processor.processFile(normal_files);
         normal_election.runElection();
         String[] correct = {"Dem1", "Dem2", "Rep1", "Rep2", "NW1",};
         String[] results = normal_election.getResults();
@@ -23,7 +24,8 @@ class CPLElectionTest {
 
     @Test
     void runTwoTiedElectionTest() {
-        CPLElection two_tie = (CPLElection) processor.processFile(fh_two_tied.openFile());
+        File[] two_tie_files = new File[] {fh_two_tied.openFile()};
+        CPLElection two_tie = (CPLElection) processor.processFile(two_tie_files);
         two_tie.runElection();
         String[] correct = {"Dem1", "Dem2", "Dem3", "Rep1", "Rep2",};
         String[] results = two_tie.getResults();
