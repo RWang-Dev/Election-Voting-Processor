@@ -17,27 +17,42 @@ public class Main{
      * @param args command line arguments to program
      */
     public static void main(String[] args){
+        FileHandler[] fh_list;
 
-        FileHandler fh;
-
-        // create FileHandler object based on if filename is input to command line or not
+        // create list of FileHandler object based on if filename is input to command line or not
         if (args == null || args.length == 0){
-            fh = new FileHandler();
+            // prompt user for number of input filenames
+            Scanner in = new Scanner(System.in);
+            System.out.println("Enter the number of files you wish to process for the election: ");
+            int num_files = Integer.parseInt(in.nextLine());
+
+            fh_list = new FileHandler[num_files];
+            for (int i = 0; i < num_files; i++){
+                fh_list[i] = new FileHandler();
+            }
+//            fh = new FileHandler();
         }
         else {
-            fh = new FileHandler(args[0]);
+            fh_list = new FileHandler[args.length];
+            for (int i = 0; i < args.length; i++){
+                fh_list[i] = new FileHandler(args[i]);
+            }
+           // fh = new FileHandler(args[0]);
         }
 
-        // retrieve file object for the input file
-        File fp = fh.openFile();
+        // retrieve file objects for the input files
+        File[] fp_list = new File[fh_list.length];
+        for (int i = 0; i < fp_list.length; i++){
+            fp_list[i] = fh_list[i].openFile();
+        }
+//        File fp = fh.openFile();
 
-        // create Scanner to read File
+        // create Scanner to read first File, to determine the type of election to be run
         Scanner scnr;
         try {
-            scnr = new Scanner(fp);
+            scnr = new Scanner(fp_list[0]);
         }
         catch (FileNotFoundException ex) {
-
             System.out.println("ERROR: File not found");
             return;
         }
@@ -52,14 +67,17 @@ public class Main{
         else if (firstLine.equals("CPL")){
             fileP = new CPLFileProcessor();
         }
+//        else if (firstLine.equals("PO")){
+//            fileP = new POFileProcessor();
+//        }
         else {
             System.out.println("ERROR: File incorrectly formatted");
             return;
         }
         scnr.close(); // close Scanner, rest of file will be read later
 
-        // read and process file to create corresponding Election object with all the data
-        Election currentElection = fileP.processFile(fp);
+        // read and process files to create corresponding Election object with all the data
+        Election currentElection = fileP.processFile(fp_list);
 
         // run election algorithms
         currentElection.runElection();

@@ -23,7 +23,8 @@ public class CPLFileProcessorTest {
     // appropriate fields without error
     @Test
     void processGoodFileTest(){
-        CPLElection good_election = (CPLElection) processor.processFile(fh_good.openFile());
+        File[] good_files = new File[] {fh_good.openFile()};
+        CPLElection good_election = (CPLElection) processor.processFile(good_files);
         assertNotNull(good_election);
         assertEquals(5, good_election.getNumSeats());
         assertEquals(40, good_election.getNumBallots());
@@ -34,7 +35,8 @@ public class CPLFileProcessorTest {
     // will still be processed
     @Test
     void processNoBallotFileTest(){
-        CPLElection no_ballots_election = (CPLElection) processor.processFile(fh_no_ballots.openFile());
+        File[] no_ballot_files = new File[] {fh_no_ballots.openFile()} ;
+        CPLElection no_ballots_election = (CPLElection) processor.processFile(no_ballot_files);
         //assertNotNull(no_ballots_election);
         assertEquals(5, no_ballots_election.getNumSeats());
         assertEquals(0, no_ballots_election.getNumBallots());
@@ -45,8 +47,10 @@ public class CPLFileProcessorTest {
     // If given a null file, should throw an exception
     @Test
     void processFileNonExistentTest(){
-        assertThrows(NullPointerException.class, () -> processor.processFile(null_file));
+        File[] null_files = new File[] {null_file} ;
+        assertThrows(NullPointerException.class, () -> processor.processFile(null_files));
+        File[] nonexistent_files = new File[] { (new FileHandler("Nonexistentfile.csv")).openFile() };
         assertThrows(IllegalArgumentException.class,
-                () -> processor.processFile((new FileHandler("Nonexistentfile.csv")).openFile()));
+                () -> processor.processFile(nonexistent_files));
     }
 }

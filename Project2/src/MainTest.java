@@ -21,8 +21,8 @@ class MainTest {
         IRCandidate[] candidates = null;
 
         for(int i = 0; i < 1000; i++){
-            IRElection election = (IRElection) processor.processFile
-                    (new FileHandler("Project1/src/testIRNoBallots.csv").openFile());
+            File[] files = new File[] {new FileHandler("Project1/src/testIRNoBallots.csv").openFile()};
+            IRElection election = (IRElection) processor.processFile(files);
             election.runElection();
             winners[i] = (IRCandidate) election.getCandidates()[0];
             candidates = (IRCandidate[]) election.getCandidates();

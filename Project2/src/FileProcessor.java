@@ -9,9 +9,9 @@ public abstract class FileProcessor{
     Ballot[] ballots;
 
     /**
-     * Abstract method that returns Election object for a given input CSV File containing election information
-     * @param inputFile A File object for the input CSV file containing election information
-     * @return An Election object containing all the information gathered from the input file
+     * Abstract method that returns Election object for a given input CSV Files containing election information
+     * @param inputFiles An array of File objects for the input CSV files containing election information
+     * @return An Election object containing all the information gathered from the input files
      */
-    public abstract Election processFile(File inputFile);
+    public abstract Election processFile(File[] inputFiles);
 }

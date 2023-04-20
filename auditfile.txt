@@ -1,46 +1,24 @@
 <<<<<<< HEAD
 IR election audit file
-<<<<<<< HEAD
 Candidates: Royce (L), Kleinberg (R), Rosen (D), Chou (I)
 
 Round 0:
-	Royce (L): 6
-	Kleinberg (R): 4
-=======
-Candidates: Rosen (D), Chou (I), Royce (L), Kleinberg (R)
-
-Round 0:
-	Rosen (D): 3
-	Chou (I): 2
-	Royce (L): 1
-	Kleinberg (R): 0
-Round 1: Kleinberg (R) eliminated
-	Rosen (D): 3
-	Chou (I): 2
-	Royce (L): 1
-	-----
-Round 2: Royce (L) eliminated
->>>>>>> 9df60b652d2f076090df856edbbbe7e27e1cf7e6
-	Rosen (D): 3
-	Chou (I): 2
-Round 1: Chou (I) eliminated
 	Royce (L): 7
-	Kleinberg (R): 5
-	Rosen (D): 3
-	-----
-<<<<<<< HEAD
-Round 2: Rosen (D) eliminated
-	Royce (L): 8
+	Kleinberg (R): 4
+	Rosen (D): 6
+	Chou (I): 4
+Round 1: Chou (I) eliminated
+	Royce (L): 9
 	Kleinberg (R): 6
-=======
+	Rosen (D): 6
 	-----
-Round 3: Chou (I) eliminated
-	Rosen (D): 4
-	-----
->>>>>>> 9df60b652d2f076090df856edbbbe7e27e1cf7e6
+Round 2: Rosen (D) eliminated
+	Royce (L): 11
+	Kleinberg (R): 8
 	-----
 	-----
 
+<<<<<<< HEAD
 Winning Candidate: Rosen (D)
 =======
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -62,3 +40,6 @@ Independent          | 1          | 0           | 1         | 1          | 1    
  
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 >>>>>>> Robert
+=======
+Winning Candidate: Royce (L)
+>>>>>>> 6ec112118277c2f5e2bcecd8c812773e5e1a3082
