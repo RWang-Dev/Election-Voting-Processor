@@ -12,17 +12,17 @@ import static org.junit.jupiter.api.Assertions.*;
 class IRElectionTest {
     IRFileProcessor processor = new IRFileProcessor();
     IRElection testElection = (IRElection) processor.processFile
-            (new FileHandler("Project1/src/testIRMain.csv").openFile());
+            (new FileHandler("Project2/src/testIRMain.csv").openFile());
     IRElection testIRNoMajorityWinner = (IRElection) processor.processFile
-            (new FileHandler("Project1/src/testIRNoMajorityWinner.csv").openFile());
+            (new FileHandler("Project2/src/testIRNoMajorityWinner.csv").openFile());
     IRElection testIROneBallot = (IRElection) processor.processFile
-            (new FileHandler("Project1/src/testIROneBallot.csv").openFile());
+            (new FileHandler("Project2/src/testIROneBallot.csv").openFile());
     IRElection testIROneCandidate = (IRElection) processor.processFile
-            (new FileHandler("Project1/src/testIROneCandidate.csv").openFile());
+            (new FileHandler("Project2/src/testIROneCandidate.csv").openFile());
     IRElection testIRTiedCandidates = (IRElection) processor.processFile
-            (new FileHandler("Project1/src/testIRTiedCandidates.csv").openFile());
+            (new FileHandler("Project2/src/testIRTiedCandidates.csv").openFile());
     IRElection testIRAllTied = (IRElection) processor.processFile
-            (new FileHandler("Project1/src/testIRAllTied.csv").openFile());
+            (new FileHandler("Project2/src/testIRAllTied.csv").openFile());
 
     IRCandidate Rosen = new IRCandidate("Rosen (D)",0);
     IRCandidate Kleinberg = new IRCandidate("Kleinberg (R)",0);
@@ -123,7 +123,7 @@ class IRElectionTest {
 
         for(int i = 0; i<1000; i ++){
             testIRTiedCandidates = (IRElection) processor.processFile
-                    (new FileHandler("Project1/src/testIRTiedCandidates.csv").openFile());
+                    (new FileHandler("Project2/src/testIRTiedCandidates.csv").openFile());
 
             testIRTiedCandidates.runElection();
 
@@ -148,7 +148,7 @@ class IRElectionTest {
         ctRoyce = 0;
         for(int i = 0; i<1000; i++){
             testIRAllTied = (IRElection) processor.processFile
-                    (new FileHandler("Project1/src/testIRAllTied.csv").openFile());
+                    (new FileHandler("Project2/src/testIRAllTied.csv").openFile());
             testIRAllTied.runElection();
             if(testIRAllTied.getCandidates()[0].getName().equals(Rosen.getName())){
                 ctRosen ++;
