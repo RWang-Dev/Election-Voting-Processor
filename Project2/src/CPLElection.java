@@ -7,6 +7,7 @@ import java.io.FileWriter; // TODO:: may need to add to UML class diagram?
 import java.io.IOException;
 import java.sql.Array;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Arrays;
 
 /**
@@ -77,7 +78,8 @@ public class CPLElection extends Election {
      */
     private int firstSeatAlloc(int quota, int seatsAllocated){
         for (int i = 0; i < parties.length;i++){
-            int seats = (int) (Math.floor(parties[i].getNumVotes() / quota)); // seats that can be assigned without further work
+            // HAVE TO ROUND THIS DOWN WITH FLOOR INSTEAD OF JUST NORMAL ROUNDING
+            int seats = (int) (Math.floor(parties[i].getNumVotes() / quota)); // EDITED THIS TO FIX THE BUG WHERE CPL ALL TIE FAILED
             if(seats > parties[i].getNumPartyCandidates()){
                 seats = parties[i].getNumPartyCandidates();
                 parties[i].setNumVotesAfterFirstAllocation(-1);
@@ -105,6 +107,7 @@ public class CPLElection extends Election {
             CPLParty maxParty = null;
             ArrayList<CPLParty> tieForMax = new ArrayList<>(); // tracks tied parties for maxvotes, in case of tie
             boolean isTie = false;
+
             for (CPLParty party : parties){ // loop through all parties to find the one with the most remaining votes
                 if (party.getNumVotesAfterFirstAllocation() > max){ // new max found
                     max = party.getNumVotesAfterFirstAllocation();
@@ -115,6 +118,8 @@ public class CPLElection extends Election {
                 }
                 else if (party.getNumVotesAfterFirstAllocation() == max){ // tie for max
                     isTie = true;
+                    // DID NOT PREVIOUSLY CHANGE THE PARTY THAT WAS ADDED TO THE TIE FOR MAX LIST WHEN THERE WERE PARTIES WITH EQUAL VOTES
+                    maxParty = party; //ADDED THIS LINE WHICH PROBABLY FIXED THE ISSUE
                     tieForMax.add(maxParty);
                 }
             }
@@ -134,7 +139,7 @@ public class CPLElection extends Election {
 
             seatsAllocated ++;
             maxParty.setNumSeatsAllotedSecond(1); // allocate additional seat for maxparty
-            maxParty.setNumVotesAfterFirstAllocation(-1); // so that it no longer is considered for remainding seats
+            maxParty.setNumVotesAfterFirstAllocation(-1); // so that it no longer is considered for remaining seats
         }
     }
 

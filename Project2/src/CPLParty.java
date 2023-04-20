@@ -115,4 +115,8 @@ public class CPLParty extends Voteable {
     public void setNumVotesAfterFirstAllocation(int num) {
         this.numVotesAfterFirstAllocation = num;
     }
+
+    public String toString(){
+        return this.name;
+    }
 }
