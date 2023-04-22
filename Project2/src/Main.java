@@ -67,9 +67,9 @@ public class Main{
         else if (firstLine.equals("CPL")){
             fileP = new CPLFileProcessor();
         }
-//        else if (firstLine.equals("PO")){
-//            fileP = new POFileProcessor();
-//        }
+        else if (firstLine.equals("PO")){
+            fileP = new POFileProcessor();
+        }
         else {
             System.out.println("ERROR: File incorrectly formatted");
             return;
