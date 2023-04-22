@@ -33,4 +33,10 @@ class CPLElectionTest {
             assertTrue(correct[i].equals(results[i]));
         }
     }
+
+    @Test
+    void runManyFilesElectionTest() {
+
+    }
+
 }

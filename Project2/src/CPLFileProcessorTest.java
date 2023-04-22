@@ -8,9 +8,9 @@ import java.io.File;
 public class CPLFileProcessorTest {
     CPLFileProcessor processor = new CPLFileProcessor();
     File null_file = null;
-    FileHandler fh_good = new FileHandler("Project1/testing/csvTestFiles/testCPL.csv");
+    FileHandler fh_good = new FileHandler("Project2/testing/csvTestFiles/testCPL.csv");
     FileHandler fh_no_ballots = new
-            FileHandler("Project1/testing/csvTestFiles/testCPLNoBallots.csv");
+            FileHandler("Project2/testing/csvTestFiles/testCPLNoBallots.csv");
 
 
     @Test
@@ -52,5 +52,19 @@ public class CPLFileProcessorTest {
         File[] nonexistent_files = new File[] { (new FileHandler("Nonexistentfile.csv")).openFile() };
         assertThrows(IllegalArgumentException.class,
                 () -> processor.processFile(nonexistent_files));
+    }
+
+    // Test that multiple file functionality works
+    @Test
+    void processManyFilesTest(){
+        File[] files = new File[] {(new FileHandler("Project2/src/testCPL.csv")).openFile(),
+                (new FileHandler("Project2/src/testCPLAllTie.csv")).openFile(),
+                (new FileHandler("Project2/src/testCPLAllTieV2.csv")).openFile()} ;
+        CPLElection election = (CPLElection) processor.processFile(files);
+        assertNotNull(election);
+        assertEquals(5, election.getNumSeats());
+        assertEquals(58, election.getNumBallots());
+        assertEquals(6, election.getNumVoteables());
+
     }
 }
