@@ -1,6 +1,7 @@
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.io.File;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -18,7 +19,8 @@ public class CPLElectionTest2 {
 
     @Test
     void runNormalElectionTest() {
-        CPLElection normal_election = (CPLElection) processor.processFile(fh_normal_election.openFile());
+        File[] normal_file = new File[] {fh_normal_election.openFile()};
+        CPLElection normal_election = (CPLElection) processor.processFile(normal_file);
         normal_election.runElection();
         String[] correct = {"Dem1", "Dem2", "Rep1", "Rep2", "NW1",};
         String[] results = normal_election.getResults();
@@ -36,7 +38,8 @@ public class CPLElectionTest2 {
         int green = 0;
         int ind = 0;
         for (int j = 0; j<600; j++){
-            CPLElection normal_election = (CPLElection) processor.processFile(fh_all_tied.openFile());
+            File[] all_tied_file = new File[] {fh_all_tied.openFile()};
+            CPLElection normal_election = (CPLElection) processor.processFile(all_tied_file);
             normal_election.runElection();
             String[] correct = {"Dem1", "Rep1", "NW1", "Reform1", "Green1", "Ind1"};
             String[] results = normal_election.getResults();
@@ -77,7 +80,8 @@ public class CPLElectionTest2 {
         int dem = 0;
         int rep = 0;
         for (int k = 0; k < 100; k++){
-            CPLElection two_tie = (CPLElection) processor.processFile(fh_two_tied.openFile());
+            File[] two_tied_file = new File[] {fh_two_tied.openFile()};
+            CPLElection two_tie = (CPLElection) processor.processFile(two_tied_file);
             two_tie.runElection();
 
 

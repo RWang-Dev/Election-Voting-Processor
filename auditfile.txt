@@ -1,45 +1,20 @@
-<<<<<<< HEAD
 IR election audit file
-Candidates: Royce (L), Kleinberg (R), Rosen (D), Chou (I)
+Candidates: Rosen (D), Royce (L), Kleinberg (R), Chou (I)
 
 Round 0:
-	Royce (L): 7
-	Kleinberg (R): 4
-	Rosen (D): 6
+	Rosen (D): 9
+	Royce (L): 10
+	Kleinberg (R): 5
 	Chou (I): 4
 Round 1: Chou (I) eliminated
-	Royce (L): 9
-	Kleinberg (R): 6
-	Rosen (D): 6
+	Rosen (D): 9
+	Royce (L): 12
+	Kleinberg (R): 7
 	-----
-Round 2: Rosen (D) eliminated
-	Royce (L): 11
-	Kleinberg (R): 8
+Round 2: Kleinberg (R) eliminated
+	Rosen (D): 16
+	Royce (L): 12
 	-----
 	-----
 
-<<<<<<< HEAD
 Winning Candidate: Rosen (D)
-=======
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-                     |            | First       | Remaining | Second     | Final | % of Vote  
-Parties              | Votes      | Allocation  | Votes     | Allocation | Seat  | to         
-                     |            | Of Seats    |           | Of Seats   | Total | % of Seats 
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-Democratic           | 1          | 0           | 1         | 0          | 0     | 16% / 0% 
- 
-Republican           | 1          | 0           | 1         | 1          | 1     | 16% / 20% 
- 
-New Wave             | 1          | 0           | 1         | 1          | 1     | 16% / 20% 
- 
-Reform               | 1          | 0           | 1         | 1          | 1     | 16% / 20% 
- 
-Green                | 1          | 0           | 1         | 1          | 1     | 16% / 20% 
- 
-Independent          | 1          | 0           | 1         | 1          | 1     | 16% / 20% 
- 
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
->>>>>>> Robert
-=======
-Winning Candidate: Royce (L)
->>>>>>> 6ec112118277c2f5e2bcecd8c812773e5e1a3082
