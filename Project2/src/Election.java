@@ -38,6 +38,10 @@ public abstract class Election{
         return numBallots;
     }
 
+    /**
+     * gets the ballots cast in an election
+     * @return A Ballot[] representing the ballots cast in an election
+     */
     public Ballot[] getBallots() { return this.ballots; }
 
     /**
