@@ -100,13 +100,11 @@ public class IRFileProcessor extends FileProcessor{
                     else{temp.add(currBallot[k]);}
                 }
 
-                System.out.println("Ballot " + (ballot_num+1) + ": " + temp);
                 IRBallot resBallot = new IRBallot(temp);
                 ballots[ballot_num] = resBallot;
                 ballot_num += 1; // increment ballot_num
             }
         }
-        System.out.println();
 
         // close all scanners
         for (Scanner s : scanners){
@@ -126,12 +124,6 @@ public class IRFileProcessor extends FileProcessor{
             }
             candidates[i + 1] = curr;
         }
-
-        System.out.println("INITIAL VOTE COUNT: ");
-        for (int i = 0; i<candidates.length; i ++){
-            System.out.println(candidates[i].getName() + ": " + candidates[i].numVotes);
-        }
-        System.out.println();
 
         // return the new IRElection object to begin the execution of the IR algorithm
         return new IRElection(candidates, ballots);

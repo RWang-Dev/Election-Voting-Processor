@@ -77,13 +77,6 @@ public class IRElection extends Election{
         this.reRankCandidates();
     }
 
-    private void printCandidateInfo(){
-        for(int i = 0; i<rankedCandidates.length; i++){
-            System.out.println(rankedCandidates[i].getName() + ": " + rankedCandidates[i].numVotes);
-        }
-        System.out.println();
-    }
-
     private void updateVoteCountHistories(){
         for(IRCandidate tempCand : rankedCandidates) {
             tempCand.updateVoteCountHistory();
@@ -107,14 +100,8 @@ public class IRElection extends Election{
             else{
                 eliminateCandidate();
             }
-
-            System.out.println("Vote count after eliminating last place candidate: ");
-            printCandidateInfo();
             updateVoteCountHistories();
         }
-
-        System.out.println("FINAL VOTE COUNT: ");
-        printCandidateInfo();
     }
 
     /**
@@ -196,8 +183,80 @@ public class IRElection extends Election{
      * Prints the election results to the screen
      */
     public void printElectionResults(){
-        System.out.println("____________________________________________________");
-        System.out.println("THE WINNER IS: "+ rankedCandidates[0].getName() + " with " + rankedCandidates[0].getNumVotes() + " votes");
+        String out = "IR ELECTION RESULTS:" + "\n\n" + "Total ballots cast: " + numBallots + "\n";
+        String lineOfDashes = "-".repeat(20 + ((eliminatedCandidates.size() + 1) * 17)) + "\n";
+
+        String columnHeaders = String.format("%-19s|", "     Candidate");
+        for (int i = 0; i < eliminatedCandidates.size() + 1; i++) {
+            columnHeaders += String.format("%-16s|", "     Round " + (i + 1));
+        }
+
+        columnHeaders += "\n" + String.format("%-19s|", "") ;
+        for (int i = 0; i < eliminatedCandidates.size() + 1; i++) {
+            columnHeaders += String.format("%-7s| %-7s|", " Votes", "  +-");
+        }
+
+        out += lineOfDashes + columnHeaders + "\n" + lineOfDashes;
+
+        ArrayList<Integer> exhaustedPileList = new ArrayList<>();
+        for (int i = 0; i < eliminatedCandidates.size() + 1; i++) {
+            exhaustedPileList.add(0);
+        }
+        for (IRCandidate candidate : rankedCandidates) {
+            String candidateVoteData = String.format("%-19s", candidate.getName()) + "|";;
+            int voteCount;
+            int prevVoteCount;
+            for (int i = 0; i < eliminatedCandidates.size() + 1; i++) {
+                voteCount = candidate.getVoteCountHistory().get(i);
+                if (voteCount == -1) {      // Account for votes being set to -1 when candidate is eliminated
+                    voteCount = 0;
+                }
+                if (i == 0) {
+                    prevVoteCount = 0;
+                }
+                else {
+                    if (candidate.getVoteCountHistory().get(i - 1) == -1) {     // -1 means that the candidate has already been eliminated
+                        candidateVoteData += String.format("%-16s|", "");
+                        break;
+                    }
+                    prevVoteCount = candidate.getVoteCountHistory().get(i - 1);
+                }
+
+                int voteCountDiff = voteCount - prevVoteCount;
+                String voteCountDiffStr;
+                if (voteCountDiff < 0) {
+                    voteCountDiffStr = Integer.toString(voteCountDiff);
+                }
+                else {
+                    voteCountDiffStr = "+" + voteCountDiff;
+                }
+                candidateVoteData += String.format(" %-6s| %-7s|", voteCount, voteCountDiffStr);
+                exhaustedPileList.set(i, exhaustedPileList.get(i) + voteCountDiff);
+            }
+            out += candidateVoteData + "\n";
+        }
+        String exhaustedPileString = String.format("%-19s|", "EXHAUSTED PILE");
+        for (int i = 0; i < exhaustedPileList.size(); i++) {
+            if (i == 0) {
+                exhaustedPileList.set(0, 0);
+                exhaustedPileString += String.format(" %-6s| %-7s|", 0, "+0");
+            }
+            else {
+                int exhaustedPileDiff = exhaustedPileList.get(i) - exhaustedPileList.get(i - 1);
+                String exhaustedPileDiffStr;
+                if (exhaustedPileDiff >= 0) {
+                    exhaustedPileDiffStr = "+" + exhaustedPileDiff;
+                }
+                else {
+                    exhaustedPileDiffStr = String.valueOf(exhaustedPileDiff);
+                }
+                exhaustedPileString += String.format(" %-6s| %-7s|", exhaustedPileList.get(i), exhaustedPileDiffStr);
+            }
+        }
+        out += exhaustedPileString + "\n";
+        out += lineOfDashes;
+
+        System.out.println(out);
     }
 
     /**
