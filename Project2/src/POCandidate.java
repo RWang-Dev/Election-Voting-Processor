@@ -37,6 +37,7 @@ public class POCandidate extends Voteable implements Comparable<POCandidate>{
 
     /**
      * Compares two POCandidate objects to determine rankings
+     * @param o representing the other candidate that this current candidate is being compared to
      * @return int representing whether this POCandidate is "larger" than the other
      */
     @Override

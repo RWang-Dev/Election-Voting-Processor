@@ -8,6 +8,12 @@ import java.util.Scanner;
 
 public class POFileProcessor extends FileProcessor{
 
+    /**
+     * Reads through a PO file containing PO election data and returns a corresponding POElection object after
+     * parsing the necessary election data from the files.
+     * @param inputFiles A File object for the input CSV files containing PO election information
+     * @return A POElection object containing all the information gathered from the input files
+     */
     public Election processFile(File[] inputFiles) {
         Scanner[] scanners = new Scanner[inputFiles.length]; //Scanners for every input file
         for (int i = 0; i < scanners.length; i++){

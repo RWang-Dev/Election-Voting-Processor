@@ -7,7 +7,7 @@ class IRCandidateTest {
 
     @Test
     void IRCandidateConstructorTest(){
-        IRCandidate candidate = new IRCandidate("naem", 0);
+        IRCandidate candidate = new IRCandidate("name", 0);
         assertNotNull(candidate);
     }
 
