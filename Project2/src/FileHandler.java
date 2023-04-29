@@ -36,11 +36,11 @@ public class FileHandler{
         System.out.println("Enter the name of the CSV file containing ballot information: ");
 
         // Check that the file entered does indeed exist
-        String fname = "Project2/src/" + in.nextLine();
+        String fname = in.nextLine();
         File fp = new File(fname);
         while (!fp.exists()){
             System.out.println("Filename entered does not exist, try entering again: ");
-            fname = "Project2/src/" + in.nextLine();
+            fname = in.nextLine();
             fp = new File(fname);
         }
 

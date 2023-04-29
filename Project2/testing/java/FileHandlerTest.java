@@ -16,7 +16,7 @@ public class FileHandlerTest {
     @BeforeAll
     public static void init(){
         defaultHandler = new FileHandler();
-        preInputHandler = new FileHandler("Project1/src/testCPL.csv");
+        preInputHandler = new FileHandler("testCPL.csv");
         badInputHandler = new FileHandler("NonExistentFile.csv");
     }
 
@@ -33,11 +33,11 @@ public class FileHandlerTest {
     @Test
     void openFileTest(){
         // Test Null File -- get input
-        File fp = new File("Project1/src/testCPL.csv");
+        File fp = new File("testCPL.csv");
 
         // Set System.in to custom stream
         InputStream sysInBackup = System.in; // backup System.in to restore it later
-        ByteArrayInputStream in = new ByteArrayInputStream("Project1/src/testCPL.csv".getBytes());
+        ByteArrayInputStream in = new ByteArrayInputStream("testCPL.csv".getBytes());
         System.setIn(in);
 
         File fp_from_input = defaultHandler.openFile();

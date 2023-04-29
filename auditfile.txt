@@ -1,7 +1,20 @@
-The winner is: [Rosen (D)]
-[Rosen (D)] with 45.0% of the vote.
-[Kleinberg (R)] with 45.0% of the vote.
-[Chou (I)] with 10.0% of the vote.
-[Royce (L)] with 0.0% of the vote.
-[Johnson (G)] with 0.0% of the vote.
-[Smith (M)] with 0.0% of the vote.
+IR election audit file
+Candidates: Royce (L), Kleinberg (R), Rosen (D), Chou (I)
+
+Round 0:
+	Royce (L): 6
+	Kleinberg (R): 4
+	Rosen (D): 3
+	Chou (I): 2
+Round 1: Chou (I) eliminated
+	Royce (L): 7
+	Kleinberg (R): 5
+	Rosen (D): 3
+	-----
+Round 2: Rosen (D) eliminated
+	Royce (L): 8
+	Kleinberg (R): 6
+	-----
+	-----
+
+Winning Candidate: Royce (L)

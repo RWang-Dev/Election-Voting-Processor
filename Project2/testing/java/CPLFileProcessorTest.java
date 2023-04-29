@@ -7,7 +7,7 @@
 //public class CPLFileProcessorTest {
 //    CPLFileProcessor processor = new CPLFileProcessor();
 //    File null_file = null;
-//    FileHandler fh_good = new FileHandler("Project1/src/testCPL.csv");
+//    FileHandler fh_good = new FileHandler("testCPL.csv");
 //
 //
 //

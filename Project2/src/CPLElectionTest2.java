@@ -8,10 +8,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CPLElectionTest2 {
     CPLFileProcessor processor = new CPLFileProcessor();
-    FileHandler fh_normal_election = new FileHandler("Project2/src/testCPL.csv");
-    FileHandler fh_two_tied = new FileHandler("Project2/src/testCPLTwoTie.csv");
+    FileHandler fh_normal_election = new FileHandler("testCPL.csv");
+    FileHandler fh_two_tied = new FileHandler("testCPLTwoTie.csv");
 
-    FileHandler fh_all_tied = new FileHandler("Project2/src/testCPLAllTie.csv");
+    FileHandler fh_all_tied = new FileHandler("testCPLAllTie.csv");
 
 
 
