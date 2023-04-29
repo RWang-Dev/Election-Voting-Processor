@@ -6,8 +6,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CPLElectionTest {
     CPLFileProcessor processor = new CPLFileProcessor();
-    FileHandler fh_normal_election = new FileHandler("Project1/testing/csvTestFiles/testCPL.csv");
-    FileHandler fh_two_tied = new FileHandler("Project1/testing/csvTestFiles/testCPLTwoTie.csv");
+    FileHandler fh_normal_election = new FileHandler("testCPL.csv");
+    FileHandler fh_two_tied = new FileHandler("testCPLTwoTie.csv");
 
 
     @Test

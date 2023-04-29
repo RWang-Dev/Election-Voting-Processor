@@ -14,7 +14,7 @@ public class POFileProcessorTest {
 
     @Test
     void processGoodFileTest() {
-        FileHandler fh = new FileHandler("Project2/src/testPO.csv");
+        FileHandler fh = new FileHandler("testPO.csv");
         File[] good_files = new File[] {fh.openFile()};
         POElection election = (POElection) processor.processFile(good_files);
         assertEquals(40, election.getNumBallots());
@@ -23,7 +23,7 @@ public class POFileProcessorTest {
 
     @Test
     void processFileWithNoBallotsTest(){
-//        FileHandler fh = new FileHandler("Project2/testing/csvTestFiles/testIRNoBallots.csv");
+//        FileHandler fh = new FileHandler("csvTestFiles/testIRNoBallots.csv");
 //        File[] no_ballot_files = new File[] {fh.openFile()} ;
 //        POElection election = (POElection) processor.processFile(no_ballot_files);
 //        assertNotNull(election);
@@ -52,9 +52,9 @@ public class POFileProcessorTest {
     // Test that multiple file functionality works
     @Test
     void processManyFilesTest(){
-//        File[] files = new File[] {(new FileHandler("Project2/src/testIR.csv")).openFile(),
-//                (new FileHandler("Project2/src/testIR2.csv")).openFile(),
-//                (new FileHandler("Project2/src/testIR3.csv")).openFile()} ;
+//        File[] files = new File[] {(new FileHandler("testIR.csv")).openFile(),
+//                (new FileHandler("testIR2.csv")).openFile(),
+//                (new FileHandler("testIR3.csv")).openFile()} ;
 //        POElection election = (POElection) processor.processFile(files);
 //        assertNotNull(election);
 //        assertEquals(28, election.getNumBallots());

@@ -17,7 +17,7 @@ public class FileHandlerTest {
     @BeforeAll
     public static void init(){
         defaultHandler = new FileHandler();
-        preInputHandler = new FileHandler("Project1/testing/csvTestFiles/testCPL.csv");
+        preInputHandler = new FileHandler("csvTestFiles/testCPL.csv");
         badInputHandler = new FileHandler("NonExistentFile1.csv");
     }
 
@@ -34,13 +34,13 @@ public class FileHandlerTest {
 
     //THIS TEST IS CURRENTLY FAILING. IT HAS TO DO WITH THE FACT
     //THAT WHEN WE TRY TO OPEN A FILE IT AUTOMATICALLY APPENDS
-    //"Project1/src/" ONTO THE BEGINNING OF THE STRING, MAKING
+    //"" ONTO THE BEGINNING OF THE STRING, MAKING
     //IT IMPOSSIBLE TO OPEN ANY FILE IN ANY OTHER FOLDER
     @Test
     void openFileTest(){
         // Test Null File -- get input
         // fp is the control
-        File fp = new File("Project1/testing/csvTestFiles/testCPL.csv");
+        File fp = new File("csvTestFiles/testCPL.csv");
 
         // Test already inputted
         File fp_in = preInputHandler.openFile();

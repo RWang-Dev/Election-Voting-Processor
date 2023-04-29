@@ -14,7 +14,7 @@ class IRFileProcessorTest {
 
     @Test
     void processGoodFileTest() {
-        FileHandler fh = new FileHandler("Project2/testing/csvTestFiles/testIR.csv");
+        FileHandler fh = new FileHandler("csvTestFiles/testIR.csv");
         File[] good_files = new File[] {fh.openFile()};
         IRElection election = (IRElection) processor.processFile(good_files);
         assertEquals(15, election.getNumBallots());
@@ -31,7 +31,7 @@ class IRFileProcessorTest {
 
     @Test
     void processFileWithNoBallotsTest(){
-        FileHandler fh = new FileHandler("Project2/testing/csvTestFiles/testIRNoBallots.csv");
+        FileHandler fh = new FileHandler("csvTestFiles/testIRNoBallots.csv");
         File[] no_ballot_files = new File[] {fh.openFile()} ;
         IRElection election = (IRElection) processor.processFile(no_ballot_files);
         assertNotNull(election);
@@ -60,9 +60,9 @@ class IRFileProcessorTest {
     // Test that multiple file functionality works
     @Test
     void processManyFilesTest(){
-        File[] files = new File[] {(new FileHandler("Project2/src/testIR.csv")).openFile(),
-                (new FileHandler("Project2/src/testIR2.csv")).openFile(),
-                (new FileHandler("Project2/src/testIR3.csv")).openFile()} ;
+        File[] files = new File[] {(new FileHandler("testIR.csv")).openFile(),
+                (new FileHandler("testIR2.csv")).openFile(),
+                (new FileHandler("testIR3.csv")).openFile()} ;
         IRElection election = (IRElection) processor.processFile(files);
         assertNotNull(election);
         assertEquals(28, election.getNumBallots());

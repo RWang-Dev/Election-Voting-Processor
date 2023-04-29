@@ -7,13 +7,13 @@
 //class CPLElectionTest {
 //    CPLFileProcessor processor = new CPLFileProcessor();
 //    CPLElection normal_election = (CPLElection) processor.processFile
-//            ((new FileHandler("Project1/testing/csvTestFiles/testCPL.csv")).openFile());
+//            ((new FileHandler("csvTestFiles/testCPL.csv")).openFile());
 //    CPLElection noBallotsElection = (CPLElection) processor.processFile
-//            ((new FileHandler("Project1/testing/csvTestFiles/testCPLNoBallots.csv")).openFile());
+//            ((new FileHandler("csvTestFiles/testCPLNoBallots.csv")).openFile());
 //    CPLElection twoTiedElection = (CPLElection) processor.processFile
-//            ((new FileHandler("Project1/testing/csvTestFiles/testCPLTwoTie.csv")).openFile());
+//            ((new FileHandler("csvTestFiles/testCPLTwoTie.csv")).openFile());
 //    CPLElection threeTiedElection = (CPLElection) processor.processFile
-//            ((new FileHandler("Project1/testing/csvTestFiles/testCPLThreeTie.csv")).openFile());
+//            ((new FileHandler("csvTestFiles/testCPLThreeTie.csv")).openFile());
 //    @Test
 //    void clearArrayTest() {
 //    }
