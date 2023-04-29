@@ -4,3 +4,5 @@
 
 # ignore class files
 *.class
+
+*.txt
