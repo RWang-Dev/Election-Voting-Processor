@@ -12,6 +12,7 @@ import java.util.Arrays;
  */
 public class POElection extends Election{
     POCandidate[] candidates;
+    private String[] results;
 
     /**
      * Creates an instance of a POElection
@@ -25,6 +26,24 @@ public class POElection extends Election{
         this.voteables = cands;
         this.numVoteables = cands.length;
         this.ballots = null; // A PO Election is simple enough that storing ballots is unnecessary
+        this.results = new String[numVoteables];    }
+
+    /**
+     * Gets the names of candidates and percentages of votes after
+     * running the PO election
+     * @return A String[] of the names of candidates and percentages of votes
+     */
+    public String[] getResults() {
+        return results;
+    }
+
+    /**
+     * Gets the names of candidates and percentages of votes after
+     * running the PO election
+     * @return A String[] of the names of candidates and percentages of votes
+     */
+    public POCandidate[] getCandidates() {
+        return candidates;
     }
 
     /**
@@ -92,22 +111,26 @@ public class POElection extends Election{
      */
     public void runElection(){
         determineWinner(); // sets the isWinner attribute of the winning POCandidate to true
-
         sortCandidates(); // sort the POCandidates descending order, since we have now determined the winner
+        addToResults(); // store results in results[] array
     }
 
     /**
-     * Produces the results of the PO election in the form of a String
-     * @return a String representing the results of the PO election
+     * Adds the names of each candidate and percentages of votes received to results[]
      */
-    public String produceResultsString(){
-        String out = "";
-        out += "The winner is: " + candidates[0].getName() + "\n";
-        for (POCandidate cand : candidates){ // loop through each candidate in results[] and print it
+    private void addToResults(){
+//        String out = "";
+//        out += "The winner is: " + candidates[0].getName() + "\n";
+//        for (POCandidate cand : candidates){ // loop through each candidate in results[] and print it
+//            double percent = 100 * ((double) cand.getNumVotes() / numBallots);
+//            out += (cand.getName() + " with " + String.valueOf(percent) + "% of the vote.\n");
+//        }
+        int i = 0;
+        for (POCandidate cand : candidates){ // loop through all parties
             double percent = 100 * ((double) cand.getNumVotes() / numBallots);
-            out += (cand.getName() + " with " + String.valueOf(percent) + "% of the vote.\n");
+            results[i] = (cand.getName() + " with " + String.valueOf(percent) + "% of the vote.");
+            i++;
         }
-        return out;
     }
 
 
@@ -115,7 +138,9 @@ public class POElection extends Election{
      * Prints the results of the PO election to the console
      */
     public void printElectionResults(){
-        System.out.println(produceResultsString());
+        for (String result : results) {
+            System.out.println(result);
+        }
     }
 
     /**
@@ -146,14 +171,21 @@ public class POElection extends Election{
             return;
         }
 
-        String out = produceResultsString();
+        for (String result : results) {
+            try{
+                fp.write(result);
+            }
+            catch (IOException e) {
+                System.out.println("ERROR: writing to file failed, IOException");
+                return;
+            }
+        }
 
         try {
-            fp.write(out); // write output string to file
             fp.close(); // close file
         }
         catch (IOException e) {
-            System.out.println("ERROR: writing to file failed, IOException");
+            System.out.println("ERROR: closing file failed, IOException");
             return;
         }
     }
