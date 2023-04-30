@@ -12,4 +12,4 @@ In the testing folder outside of the src folder, there will be testing data as w
 
 The src file contains class files and test .csv files for the user to run and test the program if they wish.
 
-IMPORTANT: the program assumes that the working directory is the src folder. If you are running the program with IntelliJ, make sure to change your working directory to repo-Team16\Project2\src before running.
+IMPORTANT: the program assumes that the working directory is the src folder. If you are running the program with IntelliJ, make sure to change your working directory to repo-Team16\Project2\src before running. This applies to running Main, as well as any tests with JUnit. After making sure the working directory is set up properly, when prompted for the file(s) name(s), simply type the file name .csv (e.g. "testCPL.csv"). Otherwise, when entering the filename, you must enter the whole filepath(e.g. "Project2/src/testCPL.csv").
