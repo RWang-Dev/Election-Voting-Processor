@@ -5,7 +5,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.Scanner;
-
+/**
+ * Handles processing of an input CSV file containing information about a PO election
+ */
 public class POFileProcessor extends FileProcessor{
 
     /**

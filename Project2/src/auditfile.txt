@@ -1,7 +1,1 @@
-The winner is: [Kleinberg (R)]
-[Kleinberg (R)] with 45.0% of the vote.
-[Rosen (D)] with 45.0% of the vote.
-[Chou (I)] with 10.0% of the vote.
-[Royce (L)] with 0.0% of the vote.
-[Johnson (G)] with 0.0% of the vote.
-[Smith (M)] with 0.0% of the vote.
+Rosen (D) with NaN% of the vote.Kleinberg (R) with NaN% of the vote.Chou (I) with NaN% of the vote.Royce (L) with NaN% of the vote.
